@@ -1,5 +1,4 @@
 import "./config/env.js";  // MUST be first import
-console.log("ATLAS_URI:", process.env.ATLAS_URI);
 import express from "express";
 import cors from "cors";
 import connectDB from "./db/connection.js";
