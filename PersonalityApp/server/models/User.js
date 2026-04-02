@@ -35,7 +35,13 @@ const userSchema = new mongoose.Schema({
   verificationToken: {
     type: String,
     default: null
-  }
+  },
+  friends: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User"
+    }
+  ]
 });
 
 export default mongoose.model("User", userSchema);

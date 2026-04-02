@@ -5,6 +5,7 @@ import connectDB from "./db/connection.js";
 
 import loginRoutes from "./routes/login.js";
 import registerRoutes from "./routes/regi.js";
+import friendRoutes from "./routes/friends.js";
 
 const PORT = process.env.PORT || 5050;
 const app = express();
@@ -17,6 +18,7 @@ app.use(express.json());
 // Routes
 app.use("/login", loginRoutes);
 app.use("/register", registerRoutes);
+app.use("/friends", friendRoutes);
 
 // Optional test route
 app.get("/", (req, res) => {
