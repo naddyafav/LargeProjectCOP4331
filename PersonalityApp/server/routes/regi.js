@@ -1,9 +1,19 @@
 import express from "express";
 import bcrypt from "bcryptjs";
 import crypto from "crypto";
+import nodemailer from "nodemailer";
 import User from "../models/User.js";
 
 const router = express.Router();
+
+// Create email transporter
+const transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS
+  }
+});
 
 // POST /register
 router.post("/", async (req, res) => {
@@ -46,14 +56,28 @@ router.post("/", async (req, res) => {
       username: username,
       password: hashedPassword,
       isVerified: false,
-      verificationToken: verificationToken
+      verificationToken: verificationToken,
+      friends: []
     });
 
     await newUser.save();
 
+    const verificationLink = `${process.env.BASE_URL}/register/verify/${verificationToken}`;
+
+    await transporter.sendMail({
+      from: process.env.EMAIL_USER,
+      to: email,
+      subject: "Verify your Quiz account",
+      html: `
+        <h2>Welcome to the Quiz App</h2>
+        <p>Thank you for registering.</p>
+        <p>Please click the link below to verify your email:</p>
+        <a href="${verificationLink}">${verificationLink}</a>
+      `
+    });
+
     return res.status(201).json({
-      message: "User registered. Please check your email to verify your account.",
-      verificationToken: verificationToken
+      message: "User registered successfully. Please check your email to verify your account."
     });
   } catch (error) {
     console.error("Registration error:", error);
