@@ -50,11 +50,11 @@ export default function Login() {
       <h1>Login</h1>
       <form onSubmit={handleSubmit}>
         <div>
-          <label>Email:</label><br />
+          <label>Username:</label><br />
           <input
-            type="email"
-            value={email}
-            onChange={e => setEmail(e.target.value)}
+            type="username"
+            value={username}
+            onChange={e => setUsername(e.target.value)}
             required
           />
         </div>
