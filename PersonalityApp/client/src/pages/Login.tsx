@@ -10,10 +10,9 @@ export default function Login() {
     const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const API_URL = import.meta.env.VITE_API_URL;
-
     try {
-        const response = await fetch('${API_URL}/login', {
+        //const API_URL = import.meta.env.VITE_API_URL;
+        const response = await fetch("http://localhost:5050/login", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
