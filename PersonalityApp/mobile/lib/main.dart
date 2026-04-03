@@ -56,7 +56,7 @@ class _RegisterPageState extends State<RegisterPage> {
     });
 
     try {
-      final Uri url = Uri.parse("http://10.0.2.2:5050/register");
+      final Uri url = Uri.parse("http://104.236.41.135:5050/register");
 
       final response = await http.post(
         url,

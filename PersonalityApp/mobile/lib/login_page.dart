@@ -34,7 +34,7 @@ class _LoginPageState extends State<LoginPage> {
     });
 
     try {
-      final Uri url = Uri.parse("http://10.0.2.2:5050/login");
+      final Uri url = Uri.parse("http://104.236.41.135:5050/login");
 
       final response = await http.post(
         url,
