@@ -23,7 +23,11 @@ export default function Login() {
         }),
         });
 
+        console.info("Request was sent");
+
         const data = await response.json();
+
+        console.info("Request was recieved");
 
         if (response.ok) {
         // Save token
