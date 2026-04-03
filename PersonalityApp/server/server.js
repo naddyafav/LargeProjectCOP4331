@@ -16,7 +16,7 @@ app.use(cors());
 app.use(express.json());
 
 // Routes
-app.use("/api/login", loginRoutes);
+app.use("/login", loginRoutes);
 app.use("/register", registerRoutes);
 app.use("/friends", friendRoutes);
 

@@ -11,7 +11,7 @@ export default function Login() {
     e.preventDefault();
 
     try {
-      const response = await fetch("http://localhost:5050/api/login", {
+      const response = await fetch("http://104.236.41.135:5050/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, password }),
