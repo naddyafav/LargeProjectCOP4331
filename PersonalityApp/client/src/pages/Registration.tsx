@@ -1,6 +1,9 @@
 import { useState, useMemo } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function Registration() {
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
   const [form, setForm] = useState({
     first: "",
     last: "",
@@ -13,10 +16,36 @@ export default function Registration() {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log(form);
-  };
+  const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+
+  try {
+    const response = await fetch("http://104.236.41.135:5050/register", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        firstName: form.first,
+        lastName: form.last,
+        email: form.email,
+        username: form.username,
+        password: form.password,
+      }),
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+      // Since your backend doesn't return token yet, just show message
+      alert(data.message); 
+      navigate("/login"); // redirect to login page for email verification
+    } else {
+      setError(data.error || "Registration failed");
+    }
+  } catch (err) {
+    console.error(err);
+    setError("Server error. Try again later.");
+  }
+};
 
   const inputStyle = {
     backgroundColor: "#e9ecef",
@@ -165,6 +194,8 @@ export default function Registration() {
             onChange={handleChange}
             required
           />
+
+          {error && <p style={{ color: "red" }}>{error}</p>}
 
           {/* Button */}
           <button
