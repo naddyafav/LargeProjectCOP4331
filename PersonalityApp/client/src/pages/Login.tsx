@@ -2,26 +2,48 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 export default function Login() {
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate(); // for redirect after login
 
-  const handleSubmit = async (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    // Placeholder login logic
-    if (email === "test@example.com" && password === "password") {
-      setError("");
-      // Redirect to Home or Quiz page
-      navigate("/home");
-    } else {
-      setError("Invalid email or password");
-    }
 
-    // Later: call backend API
-    // const response = await fetch("/api/login", { method: "POST", body: JSON.stringify({ email, password }) })
-  };
+    const API_URL = import.meta.env.VITE_API_URL;
+
+    try {
+        const response = await fetch('${API_URL}/login', {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            username,
+            password,
+        }),
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+        // Save token
+        localStorage.setItem("token", data.token);
+
+        // store user info
+        localStorage.setItem("user", JSON.stringify(data.user));
+
+        // Redirect
+        navigate("/home");
+        } else {
+        // Handle backend errors
+        setError(data.error || "Login failed");
+        }
+    } catch (err) {
+        console.error(err);
+        setError("Server error. Try again later.");
+    }
+    };
 
   return (
     <div style={{ padding: "2rem" }}>
