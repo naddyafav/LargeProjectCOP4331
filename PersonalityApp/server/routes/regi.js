@@ -62,8 +62,10 @@ router.post("/", async (req, res) => {
 
     await newUser.save();
 
+    console.log("Creating verification link.");
     const verificationLink = `${process.env.BASE_URL}/register/verify/${verificationToken}`;
 
+    console.log("Sending email verificaiton.");
     await transporter.sendMail({
       from: process.env.EMAIL_USER,
       to: email,
@@ -76,6 +78,7 @@ router.post("/", async (req, res) => {
       `
     });
 
+    console.log("Sending success message.");
     return res.status(201).json({
       message: "User registered successfully. Please check your email to verify your account."
     });
