@@ -36,7 +36,9 @@ export default function Registration() {
     const data = await response.json();
     console.log("Data from API:", data);
 
+    console.log("Checking response type.");
     if (response.ok) {
+      console.log("Response if ok.");
       // Show success message
       setMessage(data.message);
       setError(""); // clear previous errors if any
