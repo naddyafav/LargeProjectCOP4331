@@ -133,10 +133,10 @@ router.get("/search", verifyToken, async(req, res) => {
 
     const currentUserId = req.user.userId;
     const currentUser = await User.findById(currentUserId);
-    const friendIds = currentUser.friends.map(id => id.toString());
+    const friendIds = currentUser.friends
 
     const results = await User.find({
-      _id: { $nin: [...friendIds, currentUserId]
+      _id: { $nin: [...friendIds, currentUser._id]
       },
       $or: [
         { username: { $regex: safeQuery, $options: "i" } },
