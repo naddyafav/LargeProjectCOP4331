@@ -103,13 +103,13 @@ export default function Registration() {
       <style>
         {`
           @keyframes floatCloudLR {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(120vw); }
+            0% { transform: translateX(-20%); }   /* start slightly offscreen left */
+            100% { transform: translateX(100%); } /* move fully to right */
           }
 
           @keyframes floatCloudRL {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-120vw); }
+            0% { transform: translateX(120%); }  /* start slightly offscreen right */
+            100% { transform: translateX(-20%); } /* move fully to left */
           }
         `}
       </style>
