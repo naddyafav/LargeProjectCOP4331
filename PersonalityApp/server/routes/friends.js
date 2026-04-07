@@ -101,7 +101,7 @@ router.post("/add", verifyToken, async (req, res) => {
 router.get("/list", verifyToken, async (req, res) => {
   try {
     const currentUserId = req.user.userId;
-    const currentUser = await User.findById(currentUserId).populate("friends", "username firstname LastName");
+    const currentUser = await User.findById(currentUserId).populate("friends", "username firstName LastName");
 
     if(!currentUser) {
       return res.status(404).json({ 
