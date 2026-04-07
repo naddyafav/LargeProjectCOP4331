@@ -120,22 +120,30 @@ router.get("/list", verifyToken, async (req, res) => {
 //GET /friends/search
 router.get("/search", verifyToken, async(req, res) => {
   try {
-    const query = req.query.q;
+    const query = req.query.q?.trim();
+
+    const escapeRegex = (string) => string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const safeQuery = escapeRegex(query);
 
     if(!query) {
       return res.status(400).json({ 
-        error: "Search query is required." });
+        error: "Search query is required." 
+      });
     }
+
     const currentUserId = req.user.userId;
+    const currentUser = await User.findById(currentUserId);
 
     const results = await User.find({
-      _id: { $ne: currentUserId },
+      _id: { $ne: currentUserId, 
+        $nin: currentUser.friends 
+      },
       $or: [
-        { username: { $regex: query, $options: "i" } },
-        { firstName: { $regex: query, $options: "i" } },
-        { lastName: { $regex: query, $options: "i" } }
+        { username: { $regex: safeQuery, $options: "i" } },
+        { firstName: { $regex: safeQuery, $options: "i" } },
+        { lastName: { $regex: safeQuery, $options: "i" } }
       ]
-    }).select("username firstName lastName");
+    }).select("username firstName lastName").limit(15);
 
     return res.status(200).json({ results });
 
