@@ -118,7 +118,7 @@ export default function Registration() {
       <div
         className="p-4"
         style={{
-          width: "100%"
+          width: "100%",
           maxWidth: "420px",
           backgroundColor: "#f8f9fa",
           borderRadius: "20px",
