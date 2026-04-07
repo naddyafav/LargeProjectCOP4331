@@ -30,7 +30,6 @@ router.post("/", async (req, res) => {
       });
     }
 
-    console.log("Username error.");
     const existingUsername = await User.findOne({ username: username });
     if (existingUsername) {
       return res.status(409).json({
@@ -38,7 +37,6 @@ router.post("/", async (req, res) => {
       });
     }
     
-    console.log("Email error.");
     const existingEmail = await User.findOne({ email: email.toLowerCase() });
     if (existingEmail) {
       return res.status(409).json({
@@ -46,13 +44,11 @@ router.post("/", async (req, res) => {
       });
     }
 
-    console.log("Encrypting password.");
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
     const verificationToken = crypto.randomBytes(32).toString("hex");
 
-    console.log("Creating new user.");
     const newUser = new User({
       firstName: firstName,
       lastName: lastName,
@@ -64,26 +60,26 @@ router.post("/", async (req, res) => {
       friends: []
     });
 
-    console.log("Saving new user.");
     await newUser.save();
 
-    console.log("Creating verification link.");
-    const verificationLink = `${process.env.BASE_URL}/register/verify/${verificationToken}`;
+    try {
+      const verificationLink = `${process.env.BASE_URL}/register/verify/${verificationToken}`;
 
-    console.log("Sending email verificaiton.");
-    await transporter.sendMail({
-      from: process.env.EMAIL_USER,
-      to: email,
-      subject: "Verify your Quiz account",
-      html: `
-        <h2>Welcome to the Quiz App</h2>
-        <p>Thank you for registering.</p>
-        <p>Please click the link below to verify your email:</p>
-        <a href="${verificationLink}">${verificationLink}</a>
-      `
-    });
+      await transporter.sendMail({
+        from: process.env.EMAIL_USER,
+        to: email,
+        subject: "Verify your Quiz account",
+        html: `
+          <h2>Welcome to the Quiz App</h2>
+          <p>Thank you for registering.</p>
+          <p>Please click the link below to verify your email:</p>
+          <a href="${verificationLink}">${verificationLink}</a>
+        `
+      });
+    } catch (emailErr) {
+      console.error("Email failed:", emailErr);
+    }
 
-    console.log("Sending success message.");
     return res.status(201).json({
       message: "User registered successfully. Please check your email to verify your account."
     });
