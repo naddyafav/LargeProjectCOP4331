@@ -98,7 +98,7 @@ router.post("/add", verifyToken, async (req, res) => {
 
 
 //GET /friends/list
-router.post("/list", verifyToken, async (req, res) => {
+router.get("/list", verifyToken, async (req, res) => {
   try {
     const currentUserId = req.user.userId;
     const currentUser = await User.findById(currentUserId).populate("friends", "username firstName lastName");
