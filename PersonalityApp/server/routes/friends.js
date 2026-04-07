@@ -130,14 +130,13 @@ router.get("/search", verifyToken, async(req, res) => {
         error: "Search query is required." 
       });
     }
-    
+
     const currentUserId = req.user.userId;
     const currentUser = await User.findById(currentUserId);
     const friendIds = currentUser.friends.map(id => id.toString());
 
     const results = await User.find({
-      _id: { $ne: currentUserId,
-        $nin: friendIds
+      _id: { $nin: [...friendIds, currentUserId]
       },
       $or: [
         { username: { $regex: safeQuery, $options: "i" } },
