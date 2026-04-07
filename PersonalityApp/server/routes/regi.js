@@ -30,13 +30,15 @@ router.post("/", async (req, res) => {
       });
     }
 
+    console.log("Username error.");
     const existingUsername = await User.findOne({ username: username });
     if (existingUsername) {
       return res.status(409).json({
         error: "Username already taken."
       });
     }
-
+    
+    console.log("Email error.");
     const existingEmail = await User.findOne({ email: email.toLowerCase() });
     if (existingEmail) {
       return res.status(409).json({
@@ -44,11 +46,13 @@ router.post("/", async (req, res) => {
       });
     }
 
+    console.log("Encrypting password.");
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
     const verificationToken = crypto.randomBytes(32).toString("hex");
 
+    console.log("Creating new user.");
     const newUser = new User({
       firstName: firstName,
       lastName: lastName,
@@ -60,6 +64,7 @@ router.post("/", async (req, res) => {
       friends: []
     });
 
+    console.log("Saving new user.");
     await newUser.save();
 
     console.log("Creating verification link.");
