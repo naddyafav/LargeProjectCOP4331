@@ -34,6 +34,7 @@ export default function Registration() {
     });
 
     const data = await response.json();
+    console.log("Data from API: data");
 
     if (response.ok) {
       // Show success message
