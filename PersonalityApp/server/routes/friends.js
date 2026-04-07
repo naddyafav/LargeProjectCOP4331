@@ -116,4 +116,33 @@ router.get("/list", verifyToken, async (req, res) => {
     return res.status(500).json({ error: "Server error. Please try again later. "});
   }
 });
+
+//GET /friends/search
+router.get("/search", verifyToken, async(req, res) => {
+  try {
+    const query = req.query.q;
+
+    if(!query) {
+      return res.status(400).json({ 
+        error: "Search query is required." });
+    }
+    const currentUserId = req.user.userId;
+
+    const results = await User.find({
+      _id: { $ne: currentUserId },
+      $or: [
+        { username: { $regex: query, $options: "i" } },
+        { firstName: { $regex: query, $options: "i" } },
+        { lastName: { $regex: query, $options: "i" } }
+      ]
+    }).select("username firstName lastName");
+
+    return res.status(200).json({ results });
+
+  } catch(error) {
+    console.error("Search friends error:", error);
+    return res.status(500).json({ 
+      error: "Server error. Please try again later." });
+  }
+});
 export default router;
