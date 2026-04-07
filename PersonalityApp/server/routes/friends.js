@@ -101,7 +101,7 @@ router.post("/add", verifyToken, async (req, res) => {
 router.get("/list", verifyToken, async (req, res) => {
   try {
     const currentUserId = req.user.userId;
-    const currentUser = await User.findById(currentUserId).populate("friends", "username firstName LastName");
+    const currentUser = await User.findById(currentUserId).populate("friends", "username firstName lastName");
 
     if(!currentUser) {
       return res.status(404).json({ 
@@ -115,5 +115,5 @@ router.get("/list", verifyToken, async (req, res) => {
     console.error("List friends error:", error);
     return res.status(500).json({ error: "Server error. Please try again later. "});
   }
-})
+});
 export default router;
