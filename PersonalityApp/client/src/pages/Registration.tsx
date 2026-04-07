@@ -89,12 +89,8 @@ export default function Registration() {
 
   return (
     <div
-      className="d-flex justify-content-center align-items-center vh-100"
-      style={{
-        backgroundColor: "#2F344B",
-        position: "relative",
-        overflow: "hidden",
-      }}
+      className="d-flex justify-content-center align-items-center"
+      style={{ width: "100vw", height: "100vh", backgroundColor: "#2F344B", position: "relative", overflow: "hidden" }}
     >
       {/* ☁️ CLOUDS */}
       {clouds.map((cloud) => (
@@ -120,7 +116,8 @@ export default function Registration() {
       <div
         className="p-4"
         style={{
-          width: "420px",
+          width: "100%"
+          maxWidth: "420px",
           backgroundColor: "#f8f9fa",
           borderRadius: "20px",
           border: "6px solid #7aa2e3",

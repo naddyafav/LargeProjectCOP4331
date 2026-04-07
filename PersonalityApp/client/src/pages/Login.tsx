@@ -64,8 +64,8 @@ export default function Login() {
 
   return (
     <div
-      className="d-flex justify-content-center align-items-center vh-100"
-      style={{ backgroundColor: "#ACDFFA", position: "relative", overflow: "hidden" }}
+      className="d-flex justify-content-center align-items-center"
+      style={{ width: "100vw", height: "100vh", backgroundColor: "#ACDFFA", position: "relative", overflow: "hidden" }}
     >
       {/* Clouds */}
       {clouds.map((cloud) => (
@@ -89,7 +89,8 @@ export default function Login() {
       <div
         className="p-4"
         style={{
-          width: "420px",
+          width: "100%"
+          maxWidth: "420px",
           backgroundColor: "#f8f9fa",
           borderRadius: "20px",
           border: "6px solid #7aa2e3",
