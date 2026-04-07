@@ -2,6 +2,7 @@ import { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 
 export default function Registration() {
+  const [message, setMessage] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
   const [form, setForm] = useState({
@@ -35,15 +36,23 @@ export default function Registration() {
     const data = await response.json();
 
     if (response.ok) {
-      // Since your backend doesn't return token yet, just show message
-      alert(data.message); 
-      navigate("/login"); // redirect to login page for email verification
+      // Show success message
+      setMessage(data.message);
+      setError(""); // clear previous errors if any
+
+      // Optionally redirect after a few seconds
+      setTimeout(() => {
+        navigate("/login");
+      }, 3000); // wait 3 seconds so user sees the message
     } else {
+      // Show error returned by API
       setError(data.error || "Registration failed");
+      setMessage("");
     }
   } catch (err) {
     console.error(err);
     setError("Server error. Try again later.");
+    setMessage("");
   }
 };
 
@@ -195,7 +204,8 @@ export default function Registration() {
             required
           />
 
-          {error && <p style={{ color: "red" }}>{error}</p>}
+          {message && <div style={{ color: "green", marginBottom: "1rem" }}>{message}</div>}
+          {error && <div style={{ color: "red", marginBottom: "1rem" }}>{error}</div>}
 
           {/* Button */}
           <button
