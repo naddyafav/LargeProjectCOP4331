@@ -62,7 +62,6 @@ router.post("/", async (req, res) => {
 
     await newUser.save();
 
-    /*
     try {
       const verificationLink = `${process.env.BASE_URL}/register/verify/${verificationToken}`;
 
@@ -79,7 +78,7 @@ router.post("/", async (req, res) => {
       });
     } catch (emailErr) {
       console.error("Email failed:", emailErr);
-    } */
+    }
 
     return res.status(201).json({
       message: "User registered successfully. Please check your email to verify your account."
