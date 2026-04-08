@@ -114,7 +114,7 @@ export default function Login() {
       const duration = 80 - sizeFactor * 40; // 80s → 20s
       const delay = Math.random() * 10;
       const opacity = 0.4 + sizeFactor * 0.6; // 0.4 → 1.0
-      const top = 0 + Math.random() * 90;
+      const top = 0 + Math.random() * 80;
       const left = direction === "left" ? `-${width + 50}px` : `calc(100vw + 50px)`;
 
       const animation = direction === "left"
