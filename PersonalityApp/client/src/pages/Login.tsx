@@ -34,52 +34,51 @@ export default function Login() {
 
   const inputStyle = { backgroundColor: "#e9ecef", border: "none" };
 
-  // Generate clouds once on component mount
+  // Generate clouds once
   const clouds = useMemo(() => {
-
-    // Available cloud images
     const cloudImages = ["/cloud1.png", "/cloud2.png", "/cloud3.png"];
 
-    // Create 6 randomized clouds
-    return [...Array(6)].map((_, i) => {
-
+    return [...Array(8)].map((_, i) => {
       const src = cloudImages[Math.floor(Math.random() * cloudImages.length)];
       const direction = Math.random() < 0.5 ? "left" : "right";
       const width = 300 + Math.random() * 100;
 
-      // Random vertical position
-      const top = Math.random() * 60 + 5;
+      // Full vertical range
+      const top = Math.random() * 90;
 
-      // Start clouds at a visible horizontal position
-      const startX = Math.random() * 100;
+      // First few clouds = visible immediately
+      const isInitial = i < 4;
 
       return {
         key: i,
         src,
         style: {
-          // Position cloud freely on screen
           position: "absolute" as const,
-
           top: `${top}%`,
-          left: `${startX}%`,
-
           width: `${width}px`,
 
-          // Animate clouds continuously across screen
+          // Initial clouds start ON screen
+          left: isInitial
+            ? `${Math.random() * 100}%`
+            : direction === "left"
+            ? "-300px"
+            : "100vw",
+
+          // Initial clouds move immediately, others stagger in
           animation:
             direction === "left"
-              ? `floatCloudLR ${30 + Math.random() * 20}s linear infinite`
-              : `floatCloudRL ${30 + Math.random() * 20}s linear infinite`,
+              ? `floatCloudLR ${30 + Math.random() * 20}s linear ${
+                  isInitial ? 0 : Math.random() * 10
+                }s infinite`
+              : `floatCloudRL ${30 + Math.random() * 20}s linear ${
+                  isInitial ? 0 : Math.random() * 10
+                }s infinite`,
 
-          // Slight opacity variation for realism
           opacity: 0.7 + Math.random() * 0.3,
-
-          // Keep clouds behind UI elements
           zIndex: 0,
         },
       };
     });
-
   }, []);
 
   return (
@@ -99,7 +98,7 @@ export default function Login() {
               transform: translateX(0);
             }
             100% {
-              transform: translateX(120vw); /* move across entire screen */
+              transform: translateX(140vw); /* move across entire screen */
             }
           }
 
@@ -108,7 +107,7 @@ export default function Login() {
               transform: translateX(0);
             }
             100% {
-              transform: translateX(-120vw);
+              transform: translateX(-140vw);
             }
           }
         `}
