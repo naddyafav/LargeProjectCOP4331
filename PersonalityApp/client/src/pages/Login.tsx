@@ -53,7 +53,10 @@ export default function Login() {
     return [...Array(10)].map((_, i) => {
       const src = getRandomCloud();
       const direction = Math.random() < 0.5 ? "left" : "right";
-      const width = 300 + Math.random() * 100;
+      const sizeFactor = Math.random(); // 0 → 1
+      const width = 150 + sizeFactor * 350; // 150px → 500px
+      const duration = 60 - sizeFactor * 40; // 60s (far) → 20s (close)
+      const opacity = 0.4 + sizeFactor * 0.6; // 0.4 → 1.0
 
       // Full vertical range
       const top = Math.random() * 98;
@@ -79,14 +82,14 @@ export default function Login() {
           // Initial clouds move immediately, others stagger in
           animation:
             direction === "left"
-              ? `floatCloudLR ${30 + Math.random() * 20}s linear ${
+              ? `floatCloudLR ${duration}s linear ${
                   isInitial ? 0 : Math.random() * 10
                 }s infinite`
-              : `floatCloudRL ${30 + Math.random() * 20}s linear ${
+              : `floatCloudRL ${duration}s linear ${
                   isInitial ? 0 : Math.random() * 10
                 }s infinite`,
 
-          opacity: 0.7 + Math.random() * 0.3,
+          opacity: opacity,
           zIndex: 0,
         },
       };
