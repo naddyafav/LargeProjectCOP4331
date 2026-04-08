@@ -64,8 +64,8 @@ export default function Login() {
       const width = 150 + sizeFactor * 350; // 150px → 500px
       const duration = 60 - sizeFactor * 30; // 60s → 30s
       const opacity = 0.4 + sizeFactor * 0.6; // 0.4 → 1.0
-      const top = verticalPositions[i];
-      const left = horizontalPositions[i];
+      const top = verticalPositions[i] * 100;
+      const left = horizontalPositions[i] * 100;
 
       return {
         key: `initial-${i}`,
@@ -108,7 +108,7 @@ export default function Login() {
       const width = 150 + sizeFactor * 350; // 150px → 500px
       const duration = 60 - sizeFactor * 30; // 60s → 30s
       const opacity = 0.4 + sizeFactor * 0.6; // 0.4 → 1.0
-      const top = 100;
+      const top = 90;
       const left = direction === "left" ? `-${width + 50}px` : `calc(100vw + 50px)`;
 
       const animation = direction === "left"
