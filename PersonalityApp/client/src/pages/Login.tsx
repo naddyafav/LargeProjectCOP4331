@@ -37,32 +37,49 @@ export default function Login() {
   // Generate clouds once
   const clouds = useMemo(() => {
     const cloudImages = ["/cloud1.png", "/cloud2.png", "/cloud3.png"];
-
-    let lastIndex = -1; // persists across cloud generation
+    const totalClouds = 10;
+    const initialClouds = 4; // visible immediately
+    let lastIndex = -1;
 
     const getRandomCloud = () => {
       let newIndex;
       do {
         newIndex = Math.floor(Math.random() * cloudImages.length);
       } while (newIndex === lastIndex);
-
       lastIndex = newIndex;
       return cloudImages[newIndex];
     };
 
-    return [...Array(10)].map((_, i) => {
+    return Array.from({ length: totalClouds }).map((_, i) => {
       const src = getRandomCloud();
       const direction = Math.random() < 0.5 ? "left" : "right";
-      const sizeFactor = Math.random(); // 0 → 1
+
+      // Cloud size factor: 0 → 1
+      const sizeFactor = Math.random();
       const width = 150 + sizeFactor * 350; // 150px → 500px
-      const duration = 60 - sizeFactor * 30; // 60s (far) → 20s (close)
+      const duration = 60 - sizeFactor * 30; // 60s → 30s
       const opacity = 0.4 + sizeFactor * 0.6; // 0.4 → 1.0
 
-      // Full vertical range
-      const top = Math.random() * 98;
+      // Vertical position (0% → 100%)
+      const verticalMargin = 0; // optional margin to avoid edges
+      const top = verticalMargin * 100 + Math.random() * (100 - verticalMargin * 200);
 
-      // First few clouds = visible immediately
-      const isInitial = i < 4;
+      // Determine starting left
+      let left: string;
+      if (i < initialClouds) {
+        // Initial clouds: avoid center 40–60%
+        left = Math.random() < 0.5
+          ? `${Math.random() * 40}%`      // left side
+          : `${60 + Math.random() * 40}%`; // right side
+      } else {
+        // Off-screen spawn
+        left = direction === "left" ? `-${width + 50}px` : `calc(100vw + 50px)`;
+      }
+
+      // Animation
+      const animation = direction === "left"
+        ? `floatCloudLR ${duration}s linear infinite`
+        : `floatCloudRL ${duration}s linear infinite`;
 
       return {
         key: i,
@@ -71,21 +88,9 @@ export default function Login() {
           position: "absolute" as const,
           top: `${top}%`,
           width: `${width}px`,
-
-          // Initial clouds start ON screen
-          left: isInitial
-            ? `${Math.random() * 100}%`
-            : direction === "left"
-            ? `-${width}px`
-            : "100vw",
-
-          // Initial clouds move immediately, others stagger in
-          animation:
-            direction === "left"
-              ? `floatCloudLR ${duration}s linear infinite`
-              : `floatCloudRL ${duration}s linear infinite`,
-
-          opacity: opacity,
+          left,
+          animation,
+          opacity,
           zIndex: 0,
         },
       };
