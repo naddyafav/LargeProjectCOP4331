@@ -122,21 +122,20 @@ router.get("/search", verifyToken, async(req, res) => {
   try {
     const query = req.query.q?.trim();
 
-    const escapeRegex = (string) => string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-    const safeQuery = escapeRegex(query);
-
     if(!query) {
       return res.status(400).json({ 
         error: "Search query is required." 
       });
     }
 
+    const escapeRegex = (string) => string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const safeQuery = escapeRegex(query);
+
     const currentUserId = req.user.userId;
     const currentUser = await User.findById(currentUserId);
-    const friendIds = currentUser.friends
 
     const results = await User.find({
-      _id: { $nin: [...friendIds, currentUser._id]
+      _id: { $nin: currentUser.friends.concat([currentUser._id])
       },
       $or: [
         { username: { $regex: safeQuery, $options: "i" } },
