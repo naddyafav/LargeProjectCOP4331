@@ -37,7 +37,21 @@ export default function Login() {
   // === Initial clouds (one-time) ===
   const initialClouds = useMemo(() => {
     const cloudImages = ["/cloud1.png", "/cloud2.png", "/cloud3.png"];
-    const totalInitial = 6; // number of clouds to appear immediately
+    const totalInitial = 10; // number of clouds to appear immediatel
+
+    // Generate evenly spaced horizontal positions
+    const horizontalPositions = Array.from({ length: totalInitial }, (_, i) => {
+      const base = ((i + 0.5) / totalInitial) * 100; // evenly spaced
+      const jitter = (Math.random() - 0.5) * 10;      // ±5% random offset
+      return Math.min(Math.max(base + jitter, 0), 100); // clamp 0–100%
+    });
+
+    // Generate random vertical positions
+    const verticalPositions = Array.from({ length: totalInitial }, (_, i) => {
+      const base = ((i + 0.5) / totalInitial) * 100;
+      const jitter = (Math.random() - 0.5) * 10;  // ±5% vertical offset
+      return Math.min(Math.max(base + jitter, 0), 100);
+    });
 
     let lastIndex = -1;
 
@@ -58,12 +72,8 @@ export default function Login() {
       const width = 150 + sizeFactor * 350; // 150px → 500px
       const duration = 60 - sizeFactor * 30; // 60s → 30s
       const opacity = 0.4 + sizeFactor * 0.6; // 0.4 → 1.0
-
-      // Vertical position (0% → 100%)
-      const verticalMargin = 0; // optional margin to avoid edges
-      const top = verticalMargin * 100 + Math.random() * (100 - verticalMargin * 200);
-
-      const left = 20 + Math.random() * 60; // 0% → 100%
+      const top = verticalPositions[i];
+      const left = horizontalPositions[i];
 
       return {
         key: `initial-${i}`,
@@ -106,11 +116,7 @@ export default function Login() {
       const width = 150 + sizeFactor * 350; // 150px → 500px
       const duration = 60 - sizeFactor * 30; // 60s → 30s
       const opacity = 0.4 + sizeFactor * 0.6; // 0.4 → 1.0
-
-      // Vertical position (0% → 100%)
-      const verticalMargin = 0; // optional margin to avoid edges
-      const top = verticalMargin * 100 + Math.random() * (100 - verticalMargin * 200);
-
+      const top = Math.random() * 100;
       const left = direction === "left" ? `-${width + 50}px` : `calc(100vw + 50px)`;
 
       const animation = direction === "left"
