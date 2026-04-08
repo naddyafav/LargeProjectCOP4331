@@ -40,10 +40,10 @@ export default function Login() {
     const totalInitial = 10; // number of clouds to appear immediatel
 
     // Generate evenly spaced horizontal positions
-    const horizontalPositions = [0.842, 0.193, 0.675, 0.041, 0.509, 0.378, 0.964, 0.287, 0.731, 0.126];
+    const horizontalPositions = [0.02, 0.08, 0.13, 0.25, 0.38, 0.43, 0.615, 0.76, 0.91, 0.97];
 
     // Generate random vertical positions
-    const verticalPositions = [0.317, 0.892, 0.046, 0.721, 0.154, 0.438, 0.605, 0.973, 0.268, 0.586];
+    const verticalPositions = [0.48, 0.05, 0.82, 0.27, 0.66, 0.98, 0.73, 0.1, 0.5, 0.89];
 
     let lastIndex = -1;
 
@@ -58,6 +58,7 @@ export default function Login() {
 
     return Array.from({ length: totalInitial }).map((_, i) => {
       const src = getRandomCloud();
+      const direction = Math.random() < 0.5 ? "left" : "right";
 
       // Cloud size factor: 0 → 1
       const sizeFactor = Math.random();
@@ -67,6 +68,10 @@ export default function Login() {
       const top = verticalPositions[i] * 100;
       const left = horizontalPositions[i] * 100;
 
+      const animation = direction === "left"
+        ? `floatCloudLR ${duration}s linear forwards, floatVertical 6s ease-in-out infinite`
+        : `floatCloudRL ${duration}s linear forwards, floatVertical 6s ease-in-out infinite`;
+
       return {
         key: `initial-${i}`,
         src,
@@ -75,7 +80,7 @@ export default function Login() {
           top: `${top}%`,
           width: `${width}px`,
           left: `${left}%`,
-          animation: `floatCloudLR ${duration}s linear forwards`, // forwards so it disappears
+          animation: animation,
           opacity,
           zIndex: 0,
         },
@@ -108,17 +113,25 @@ export default function Login() {
       const width = 150 + sizeFactor * 350; // 150px → 500px
       const duration = 60 - sizeFactor * 30; // 60s → 30s
       const opacity = 0.4 + sizeFactor * 0.6; // 0.4 → 1.0
-      const top = 90;
+      const top = 10;
       const left = direction === "left" ? `-${width + 50}px` : `calc(100vw + 50px)`;
 
       const animation = direction === "left"
-        ? `floatCloudLR ${duration}s linear infinite`
-        : `floatCloudRL ${duration}s linear infinite`;
+        ? `floatCloudLR ${duration}s linear forwards, floatVertical 6s ease-in-out infinite`
+        : `floatCloudRL ${duration}s linear forwards, floatVertical 6s ease-in-out infinite`;
 
       return {
         key: `loop-${i}`,
         src,
-        style: { position: "absolute", top: `${top}%`, width: `${width}px`, left, animation, opacity, zIndex: 0 },
+        style: { 
+          position: "absolute", 
+          top: `${top}%`, 
+          width: `${width}px`, 
+          left, 
+          animation, 
+          opacity, 
+          zIndex: 0 
+        },
       };
     });
   }, []);
