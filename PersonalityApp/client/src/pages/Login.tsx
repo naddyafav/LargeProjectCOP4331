@@ -68,10 +68,9 @@ export default function Login() {
       const top = verticalPositions[i] * 100;
       const left = horizontalPositions[i] * 100;
 
-      const verticalAmplitude = 50 + Math.random() * 50; // 50px → 100px
       const animation = direction === "left"
-        ? `floatCloudLR ${duration}s linear forwards, floatVertical 6s ease-in-out infinite`
-        : `floatCloudRL ${duration}s linear forwards, floatVertical 6s ease-in-out infinite`;
+        ? `floatCloudLR ${duration}s linear forwards`
+        : `floatCloudRL ${duration}s linear forwards`;
 
       return {
         key: `initial-${i}`,
@@ -81,7 +80,6 @@ export default function Login() {
           top: `${top}%`,
           width: `${width}px`,
           left: `${left}%`,
-          "--vertical-amplitude": `${verticalAmplitude}px`,
           animation: animation,
           opacity,
           zIndex: 0,
@@ -115,13 +113,12 @@ export default function Login() {
       const width = 100 + sizeFactor * 400; // 150px → 500px
       const duration = 80 - sizeFactor * 60; // 80s → 20s
       const opacity = 0.4 + sizeFactor * 0.6; // 0.4 → 1.0
-      const top = 0;
+      const top = 0 + Math.random() * 90;
       const left = direction === "left" ? `-${width + 50}px` : `calc(100vw + 50px)`;
 
-      const verticalAmplitude = 50 + Math.random() * 50; // 50px → 100px
       const animation = direction === "left"
-        ? `floatCloudLR ${duration}s linear infinite, floatVertical 6s ease-in-out infinite`
-        : `floatCloudRL ${duration}s linear infinite, floatVertical 6s ease-in-out infinite`;
+        ? `floatCloudLR ${duration}s linear infinite`
+        : `floatCloudRL ${duration}s linear infinite`;
 
       return {
         key: `loop-${i}`,
@@ -131,7 +128,6 @@ export default function Login() {
           top: `${top}%`, 
           width: `${width}px`, 
           left,
-          "--vertical-amplitude": `${verticalAmplitude}px`,
           animation, 
           opacity, 
           zIndex: 0 
@@ -159,12 +155,6 @@ export default function Login() {
           @keyframes floatCloudRL {
             0%   { transform: translateX(0); }
             100% { transform: translateX(calc(-100vw - 500px)); }
-          }
-
-          @keyframes floatCloudVertical {
-            0%   { transform: translateY(0); }
-            50%  { transform: translateY(var(--vertical-amplitude, 50px)); }
-            100% { transform: translateY(0); }
           }
         `}
       </style>
