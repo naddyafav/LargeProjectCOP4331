@@ -115,7 +115,7 @@ export default function Login() {
       const width = 150 + sizeFactor * 350; // 150px → 500px
       const duration = 60 - sizeFactor * 30; // 60s → 30s
       const opacity = 0.4 + sizeFactor * 0.6; // 0.4 → 1.0
-      const top = 10;
+      const top = 1;
       const left = direction === "left" ? `-${width + 50}px` : `calc(100vw + 50px)`;
 
       const verticalAmplitude = 50 + Math.random() * 50; // 50px → 100px
