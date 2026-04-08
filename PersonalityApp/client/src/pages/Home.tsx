@@ -36,48 +36,6 @@ export default function Home() {
           ></div>
           <h2 style={{ color: "#7aa2e3", fontWeight: 600 }}>Profile</h2>
         </div>
-
-        <form onSubmit={handleSubmit}>
-          <div className="mb-3">
-            <input
-              type="text"
-              placeholder="Username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              style={inputStyle}
-              className="form-control"
-              required
-            />
-          </div>
-          <div className="mb-3">
-            <input
-              type="password"
-              placeholder="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              style={inputStyle}
-              className="form-control"
-              required
-            />
-          </div>
-
-          {error && <p style={{ color: "red" }}>{error}</p>}
-
-          <button
-            type="submit"
-            className="btn w-100"
-            style={{ backgroundColor: "#7aa2e3", color: "white", fontWeight: 500 }}
-          >
-            Login
-          </button>
-        </form>
-
-        <p className="text-center mt-3 mb-0">
-          Don't have an account?{" "}
-          <a href="/registration" style={{ color: "#7aa2e3" }}>
-            Register Now!
-          </a>
-        </p>
       </div>
     </div>
   );
