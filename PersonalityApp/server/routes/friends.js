@@ -96,4 +96,60 @@ router.post("/add", verifyToken, async (req, res) => {
   }
 });
 
+
+//GET /friends/list
+router.get("/list", verifyToken, async (req, res) => {
+  try {
+    const currentUserId = req.user.userId;
+    const currentUser = await User.findById(currentUserId).populate("friends", "username firstName lastName");
+
+    if(!currentUser) {
+      return res.status(404).json({ 
+        error: "User not found" });
+    }
+
+    return res.status(200).json({ 
+      friends: currentUser.friends});
+
+  } catch(error) {
+    console.error("List friends error:", error);
+    return res.status(500).json({ error: "Server error. Please try again later. "});
+  }
+});
+
+//GET /friends/search
+router.get("/search", verifyToken, async(req, res) => {
+  try {
+    const query = req.query.q?.trim();
+
+    if(!query) {
+      return res.status(400).json({ 
+        error: "Search query is required." 
+      });
+    }
+
+    const escapeRegex = (string) => string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const safeQuery = escapeRegex(query);
+
+    const currentUserId = req.user.userId;
+    const currentUser = await User.findById(currentUserId);
+
+    const results = await User.find({
+      _id: { $nin: currentUser.friends.concat([currentUser._id])
+      },
+      $or: [
+        { username: { $regex: safeQuery, $options: "i" } },
+        { firstName: { $regex: safeQuery, $options: "i" } },
+        { lastName: { $regex: safeQuery, $options: "i" } }
+      ]
+    }).select("username firstName lastName").limit(15);
+
+    return res.status(200).json({ results });
+
+  } catch(error) {
+    console.error("Search friends error:", error);
+    return res.status(500).json({ 
+      error: "Server error. Please try again later." });
+  }
+});
 export default router;
