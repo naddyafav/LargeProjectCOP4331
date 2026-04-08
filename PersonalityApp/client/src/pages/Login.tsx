@@ -38,13 +38,25 @@ export default function Login() {
   const clouds = useMemo(() => {
     const cloudImages = ["/cloud1.png", "/cloud2.png", "/cloud3.png"];
 
-    return [...Array(8)].map((_, i) => {
-      const src = cloudImages[Math.floor(Math.random() * cloudImages.length)];
+    let lastIndex = -1; // persists across cloud generation
+
+    const getRandomCloud = () => {
+      let newIndex;
+      do {
+        newIndex = Math.floor(Math.random() * cloudImages.length);
+      } while (newIndex === lastIndex);
+
+      lastIndex = newIndex;
+      return cloudImages[newIndex];
+    };
+
+    return [...Array(10)].map((_, i) => {
+      const src = getRandomCloud();
       const direction = Math.random() < 0.5 ? "left" : "right";
       const width = 300 + Math.random() * 100;
 
       // Full vertical range
-      const top = Math.random() * 90;
+      const top = Math.random() * 98;
 
       // First few clouds = visible immediately
       const isInitial = i < 4;
