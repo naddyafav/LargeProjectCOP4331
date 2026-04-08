@@ -62,8 +62,8 @@ export default function Login() {
 
       // Cloud size factor: 0 → 1
       const sizeFactor = Math.random();
-      const width = 150 + sizeFactor * 350; // 150px → 500px
-      const duration = 60 - sizeFactor * 30; // 60s → 30s
+      const width = 100 + sizeFactor * 400; // 150px → 500px
+      const duration = 80 - sizeFactor * 60; // 80s → 20s
       const opacity = 0.4 + sizeFactor * 0.6; // 0.4 → 1.0
       const top = verticalPositions[i] * 100;
       const left = horizontalPositions[i] * 100;
@@ -112,10 +112,10 @@ export default function Login() {
 
       // Cloud size factor: 0 → 1
       const sizeFactor = Math.random();
-      const width = 150 + sizeFactor * 350; // 150px → 500px
-      const duration = 60 - sizeFactor * 30; // 60s → 30s
+      const width = 100 + sizeFactor * 400; // 150px → 500px
+      const duration = 80 - sizeFactor * 60; // 80s → 20s
       const opacity = 0.4 + sizeFactor * 0.6; // 0.4 → 1.0
-      const top = 1;
+      const top = 0;
       const left = direction === "left" ? `-${width + 50}px` : `calc(100vw + 50px)`;
 
       const verticalAmplitude = 50 + Math.random() * 50; // 50px → 100px
