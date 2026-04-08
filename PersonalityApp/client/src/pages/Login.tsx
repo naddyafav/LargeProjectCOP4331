@@ -55,7 +55,7 @@ export default function Login() {
       const direction = Math.random() < 0.5 ? "left" : "right";
       const sizeFactor = Math.random(); // 0 → 1
       const width = 150 + sizeFactor * 350; // 150px → 500px
-      const duration = 60 - sizeFactor * 40; // 60s (far) → 20s (close)
+      const duration = 60 - sizeFactor * 30; // 60s (far) → 20s (close)
       const opacity = 0.4 + sizeFactor * 0.6; // 0.4 → 1.0
 
       // Full vertical range
@@ -76,7 +76,7 @@ export default function Login() {
           left: isInitial
             ? `${Math.random() * 100}%`
             : direction === "left"
-            ? "-${width}px"
+            ? `-${width}px`
             : "100vw",
 
           // Initial clouds move immediately, others stagger in
@@ -106,12 +106,12 @@ export default function Login() {
         {`
           @keyframes floatCloudLR {
             0%   { transform: translateX(0); }
-            100% { transform: translateX(200vw); } /* go fully across + reset */
+            100% { transform: translateX(calc(100vw + 500px)); } /* ensures fully crosses screen */
           }
 
           @keyframes floatCloudRL {
             0%   { transform: translateX(0); }
-            100% { transform: translateX(-200vw); }
+            100% { transform: translateX(calc(-100vw - 500px)); }
           }
         `}
       </style>
