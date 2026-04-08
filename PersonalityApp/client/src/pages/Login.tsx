@@ -34,11 +34,11 @@ export default function Login() {
 
   const inputStyle = { backgroundColor: "#e9ecef", border: "none" };
 
-  // Generate clouds once
-  const clouds = useMemo(() => {
+  // === Initial clouds (one-time) ===
+  const initialClouds = useMemo(() => {
     const cloudImages = ["/cloud1.png", "/cloud2.png", "/cloud3.png"];
-    const totalClouds = 10;
-    const initialClouds = 4; // visible immediately
+    const totalInitial = 6; // number of clouds to appear immediately
+
     let lastIndex = -1;
 
     const getRandomCloud = () => {
@@ -50,7 +50,54 @@ export default function Login() {
       return cloudImages[newIndex];
     };
 
-    return Array.from({ length: totalClouds }).map((_, i) => {
+    return Array.from({ length: totalInitial }).map((_, i) => {
+      const src = getRandomCloud();
+
+      // Cloud size factor: 0 → 1
+      const sizeFactor = Math.random();
+      const width = 150 + sizeFactor * 350; // 150px → 500px
+      const duration = 60 - sizeFactor * 30; // 60s → 30s
+      const opacity = 0.4 + sizeFactor * 0.6; // 0.4 → 1.0
+
+      // Vertical position (0% → 100%)
+      const verticalMargin = 0; // optional margin to avoid edges
+      const top = verticalMargin * 100 + Math.random() * (100 - verticalMargin * 200);
+
+      const left = 20 + Math.random() * 60; // 0% → 100%
+
+      return {
+        key: `initial-${i}`,
+        src,
+        style: {
+          position: "absolute" as const,
+          top: `${top}%`,
+          width: `${width}px`,
+          left: `${left}%`,
+          animation: `floatCloudLR ${duration}s linear forwards`, // forwards so it disappears
+          opacity,
+          zIndex: 0,
+        },
+      };
+    });
+  }, []);
+
+  // === Continuous clouds (loops forever) ===
+  const loopingClouds = useMemo(() => {
+    const cloudImages = ["/cloud1.png", "/cloud2.png", "/cloud3.png"];
+    const totalLoop = 10;
+
+    let lastIndex = -1;
+
+    const getRandomCloud = () => {
+      let newIndex;
+      do {
+        newIndex = Math.floor(Math.random() * cloudImages.length);
+      } while (newIndex === lastIndex);
+      lastIndex = newIndex;
+      return cloudImages[newIndex];
+    };
+
+    return Array.from({ length: totalLoop }).map((_, i) => {
       const src = getRandomCloud();
       const direction = Math.random() < 0.5 ? "left" : "right";
 
@@ -64,35 +111,16 @@ export default function Login() {
       const verticalMargin = 0; // optional margin to avoid edges
       const top = verticalMargin * 100 + Math.random() * (100 - verticalMargin * 200);
 
-      // Determine starting left
-      let left: string;
-      if (i < initialClouds) {
-        // Initial clouds: avoid center 40–60%
-        left = Math.random() < 0.5
-          ? `${Math.random() * 40}%`      // left side
-          : `${60 + Math.random() * 40}%`; // right side
-      } else {
-        // Off-screen spawn
-        left = direction === "left" ? `-${width + 50}px` : `calc(100vw + 50px)`;
-      }
+      const left = direction === "left" ? `-${width + 50}px` : `calc(100vw + 50px)`;
 
-      // Animation
       const animation = direction === "left"
         ? `floatCloudLR ${duration}s linear infinite`
         : `floatCloudRL ${duration}s linear infinite`;
 
       return {
-        key: i,
+        key: `loop-${i}`,
         src,
-        style: {
-          position: "absolute" as const,
-          top: `${top}%`,
-          width: `${width}px`,
-          left,
-          animation,
-          opacity,
-          zIndex: 0,
-        },
+        style: { position: "absolute", top: `${top}%`, width: `${width}px`, left, animation, opacity, zIndex: 0 },
       };
     });
   }, []);
@@ -103,9 +131,8 @@ export default function Login() {
       style={{ width: "100%", height: "100vh", backgroundColor: "#ACDFFA", position: "relative", overflow: "hidden" }}
     >
       {/* Clouds */}
-      {clouds.map((cloud) => (
-        <img key={cloud.key} src={cloud.src} style={cloud.style} />
-      ))}
+      {initialClouds.map((initialCloud) => (<img key={initialCloud.key} src={initialCloud.src} style={initialCloud.style} />))}
+      {loopingClouds.map((loopingCloud) => (<img key={loopingCloud.key} src={loopingCloud.src} style={loopingCloud.style} />))}
 
       <style>
         {`
