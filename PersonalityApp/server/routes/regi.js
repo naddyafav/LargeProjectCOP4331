@@ -62,23 +62,19 @@ router.post("/", async (req, res) => {
 
     await newUser.save();
 
-    try {
-      const verificationLink = `${process.env.BASE_URL}/register/verify/${verificationToken}`;
+    const verificationLink = `${req.protocol}://${req.get("host")}/register/verify/${verificationToken}`;
 
-      await transporter.sendMail({
-        from: process.env.EMAIL_USER,
-        to: email,
-        subject: "Verify your Quiz account",
-        html: `
-          <h2>Welcome to the Quiz App</h2>
-          <p>Thank you for registering.</p>
-          <p>Please click the link below to verify your email:</p>
-          <a href="${verificationLink}">${verificationLink}</a>
-        `
-      });
-    } catch (emailErr) {
-      console.error("Email failed:", emailErr);
-    }
+    await transporter.sendMail({
+      from: process.env.EMAIL_USER,
+      to: email,
+      subject: "Verify your Quiz account",
+      html: `
+        <h2>Welcome to the Quiz App</h2>
+        <p>Thank you for registering.</p>
+        <p>Please click the link below to verify your email:</p>
+        <a href="${verificationLink}">${verificationLink}</a>
+      `
+    });
 
     return res.status(201).json({
       message: "User registered successfully. Please check your email to verify your account."
