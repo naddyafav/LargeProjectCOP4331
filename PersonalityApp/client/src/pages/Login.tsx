@@ -76,18 +76,14 @@ export default function Login() {
           left: isInitial
             ? `${Math.random() * 100}%`
             : direction === "left"
-            ? "-300px"
+            ? "-${width}px"
             : "100vw",
 
           // Initial clouds move immediately, others stagger in
           animation:
             direction === "left"
-              ? `floatCloudLR ${duration}s linear ${
-                  isInitial ? 0 : Math.random() * 10
-                }s infinite`
-              : `floatCloudRL ${duration}s linear ${
-                  isInitial ? 0 : Math.random() * 10
-                }s infinite`,
+              ? `floatCloudLR ${duration}s linear infinite`
+              : `floatCloudRL ${duration}s linear infinite`,
 
           opacity: opacity,
           zIndex: 0,
@@ -109,21 +105,13 @@ export default function Login() {
       <style>
         {`
           @keyframes floatCloudLR {
-            0% {
-              transform: translateX(0);
-            }
-            100% {
-              transform: translateX(140vw); /* move across entire screen */
-            }
+            0%   { transform: translateX(0); }
+            100% { transform: translateX(200vw); } /* go fully across + reset */
           }
 
           @keyframes floatCloudRL {
-            0% {
-              transform: translateX(0);
-            }
-            100% {
-              transform: translateX(-140vw);
-            }
+            0%   { transform: translateX(0); }
+            100% { transform: translateX(-200vw); }
           }
         `}
       </style>
