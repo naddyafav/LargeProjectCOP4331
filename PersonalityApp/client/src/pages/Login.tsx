@@ -68,6 +68,7 @@ export default function Login() {
       const top = verticalPositions[i] * 100;
       const left = horizontalPositions[i] * 100;
 
+      const verticalAmplitude = 50 + Math.random() * 50; // 50px → 100px
       const animation = direction === "left"
         ? `floatCloudLR ${duration}s linear forwards, floatVertical 6s ease-in-out infinite`
         : `floatCloudRL ${duration}s linear forwards, floatVertical 6s ease-in-out infinite`;
@@ -80,6 +81,7 @@ export default function Login() {
           top: `${top}%`,
           width: `${width}px`,
           left: `${left}%`,
+          "--vertical-amplitude": `${verticalAmplitude}px`,
           animation: animation,
           opacity,
           zIndex: 0,
@@ -91,7 +93,7 @@ export default function Login() {
   // === Continuous clouds (loops forever) ===
   const loopingClouds = useMemo(() => {
     const cloudImages = ["/cloud1.png", "/cloud2.png", "/cloud3.png"];
-    const totalLoop = 10;
+    const totalLoop = 15;
 
     let lastIndex = -1;
 
@@ -116,9 +118,10 @@ export default function Login() {
       const top = 10;
       const left = direction === "left" ? `-${width + 50}px` : `calc(100vw + 50px)`;
 
+      const verticalAmplitude = 50 + Math.random() * 50; // 50px → 100px
       const animation = direction === "left"
-        ? `floatCloudLR ${duration}s linear forwards, floatVertical 6s ease-in-out infinite`
-        : `floatCloudRL ${duration}s linear forwards, floatVertical 6s ease-in-out infinite`;
+        ? `floatCloudLR ${duration}s linear infinite, floatVertical 6s ease-in-out infinite`
+        : `floatCloudRL ${duration}s linear infinite, floatVertical 6s ease-in-out infinite`;
 
       return {
         key: `loop-${i}`,
@@ -127,7 +130,8 @@ export default function Login() {
           position: "absolute", 
           top: `${top}%`, 
           width: `${width}px`, 
-          left, 
+          left,
+          "--vertical-amplitude": `${verticalAmplitude}px`,
           animation, 
           opacity, 
           zIndex: 0 
@@ -159,7 +163,7 @@ export default function Login() {
 
           @keyframes floatCloudVertical {
             0%   { transform: translateY(0); }
-            50%  { transform: translateY(10px); }
+            50%  { transform: translateY(var(--vertical-amplitude, 50px)); }
             100% { transform: translateY(0); }
           }
         `}
