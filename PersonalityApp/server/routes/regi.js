@@ -62,7 +62,7 @@ router.post("/", async (req, res) => {
 
     await newUser.save();
 
-    const verificationLink = `${process.env.BASE_URL}/register/verify/${verificationToken}`;
+    const verificationLink = `${req.protocol}://${req.get("host")}/register/verify/${verificationToken}`;
 
     await transporter.sendMail({
       from: process.env.EMAIL_USER,
