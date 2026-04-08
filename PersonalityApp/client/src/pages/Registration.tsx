@@ -92,7 +92,7 @@ export default function Registration() {
   return (
     <div
       className="d-flex justify-content-center align-items-center"
-      style={{ width: "100vw", height: "100vh", backgroundColor: "#2F344B", position: "relative", overflow: "hidden" }}
+      style={{ width: "100%", height: "100vh", backgroundColor: "#2F344B", position: "relative", overflow: "hidden" }}
     >
       {/* ☁️ CLOUDS */}
       {clouds.map((cloud) => (

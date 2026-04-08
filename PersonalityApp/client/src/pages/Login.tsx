@@ -34,32 +34,52 @@ export default function Login() {
 
   const inputStyle = { backgroundColor: "#e9ecef", border: "none" };
 
-  // Generate clouds only once
+  // Generate clouds once on component mount
   const clouds = useMemo(() => {
+
+    // Available cloud images
     const cloudImages = ["/cloud1.png", "/cloud2.png", "/cloud3.png"];
+
+    // Create 6 randomized clouds
     return [...Array(6)].map((_, i) => {
+
       const src = cloudImages[Math.floor(Math.random() * cloudImages.length)];
       const direction = Math.random() < 0.5 ? "left" : "right";
-      const width = 300 + Math.random() * 100; // cloud width
-      // Random top position between 5% and 65% to avoid being cut off
+      const width = 300 + Math.random() * 100;
+
+      // Random vertical position
       const top = Math.random() * 60 + 5;
+
+      // Start clouds at a visible horizontal position
+      const startX = Math.random() * 100;
 
       return {
         key: i,
         src,
         style: {
+          // Position cloud freely on screen
           position: "absolute" as const,
+
           top: `${top}%`,
-          left: direction === "left" ? "-200px" : "120vw",
+          left: `${startX}%`,
+
           width: `${width}px`,
-          animation: direction === "left"
-            ? `floatCloudLR ${20 + Math.random() * 20}s linear ${Math.random() * 10}s infinite`
-            : `floatCloudRL ${20 + Math.random() * 20}s linear ${Math.random() * 10}s infinite`,
+
+          // Animate clouds continuously across screen
+          animation:
+            direction === "left"
+              ? `floatCloudLR ${30 + Math.random() * 20}s linear infinite`
+              : `floatCloudRL ${30 + Math.random() * 20}s linear infinite`,
+
+          // Slight opacity variation for realism
           opacity: 0.7 + Math.random() * 0.3,
+
+          // Keep clouds behind UI elements
           zIndex: 0,
         },
       };
     });
+
   }, []);
 
   return (
@@ -75,13 +95,21 @@ export default function Login() {
       <style>
         {`
           @keyframes floatCloudLR {
-            0% { transform: translateX(-20%); }   /* start slightly offscreen left */
-            100% { transform: translateX(100%); } /* move fully to right */
+            0% {
+              transform: translateX(0);
+            }
+            100% {
+              transform: translateX(120vw); /* move across entire screen */
+            }
           }
 
           @keyframes floatCloudRL {
-            0% { transform: translateX(120%); }  /* start slightly offscreen right */
-            100% { transform: translateX(-20%); } /* move fully to left */
+            0% {
+              transform: translateX(0);
+            }
+            100% {
+              transform: translateX(-120vw);
+            }
           }
         `}
       </style>
