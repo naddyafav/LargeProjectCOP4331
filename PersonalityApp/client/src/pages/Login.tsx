@@ -40,18 +40,10 @@ export default function Login() {
     const totalInitial = 10; // number of clouds to appear immediatel
 
     // Generate evenly spaced horizontal positions
-    const horizontalPositions = Array.from({ length: totalInitial }, (_, i) => {
-      const base = ((i + 0.5) / totalInitial) * 100; // evenly spaced
-      const jitter = (Math.random() - 0.5) * 10;      // ±5% random offset
-      return Math.min(Math.max(base + jitter, 0), 100); // clamp 0–100%
-    });
+    const horizontalPositions = [0.842, 0.193, 0.675, 0.041, 0.509, 0.378, 0.964, 0.287, 0.731, 0.126];
 
     // Generate random vertical positions
-    const verticalPositions = Array.from({ length: totalInitial }, (_, i) => {
-      const base = ((i + 0.5) / totalInitial) * 100;
-      const jitter = (Math.random() - 0.5) * 10;  // ±5% vertical offset
-      return Math.min(Math.max(base + jitter, 0), 100);
-    });
+    const verticalPositions = [0.317, 0.892, 0.046, 0.721, 0.154, 0.438, 0.605, 0.973, 0.268, 0.586];
 
     let lastIndex = -1;
 
@@ -116,7 +108,7 @@ export default function Login() {
       const width = 150 + sizeFactor * 350; // 150px → 500px
       const duration = 60 - sizeFactor * 30; // 60s → 30s
       const opacity = 0.4 + sizeFactor * 0.6; // 0.4 → 1.0
-      const top = Math.random() * 100;
+      const top = 100;
       const left = direction === "left" ? `-${width + 50}px` : `calc(100vw + 50px)`;
 
       const animation = direction === "left"
@@ -150,6 +142,12 @@ export default function Login() {
           @keyframes floatCloudRL {
             0%   { transform: translateX(0); }
             100% { transform: translateX(calc(-100vw - 500px)); }
+          }
+
+          @keyframes floatCloudVertical {
+            0%   { transform: translateY(0); }
+            50%  { transform: translateY(10px); }
+            100% { transform: translateY(0); }
           }
         `}
       </style>
