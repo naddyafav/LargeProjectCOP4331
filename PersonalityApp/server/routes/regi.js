@@ -36,7 +36,7 @@ router.post("/", async (req, res) => {
         error: "Username already taken."
       });
     }
-
+    
     const existingEmail = await User.findOne({ email: email.toLowerCase() });
     if (existingEmail) {
       return res.status(409).json({
