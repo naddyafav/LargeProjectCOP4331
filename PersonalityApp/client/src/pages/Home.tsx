@@ -3,6 +3,13 @@ import { useNavigate } from "react-router-dom";
 import Clouds from "../components/Clouds";
 
 export default function Home() {
+
+  const [editingField, setEditingField] = useState<string | null>(null);
+  const [userData, setUserData] = useState({
+    username: "Ben123",
+    email: "ben@example.com",
+  });
+
   return (
     <div
       className="d-flex justify-content-center align-items-center"
@@ -35,6 +42,34 @@ export default function Home() {
             }}
           ></div>
           <h2 style={{ color: "#7aa2e3", fontWeight: 600 }}>Profile</h2>
+        </div>
+
+        <div className="profile-card">
+          {Object.entries(userData).map(([key, value]) => (
+            <div key={key} style={{ marginBottom: "1rem" }}>
+              <strong>{key}:</strong>{" "}
+
+              {editingField === key ? (
+                <input
+                  value={value}
+                  onChange={(e) =>
+                    setUserData({ ...userData, [key]: e.target.value })
+                  }
+                />
+              ) : (
+                <span>{value}</span>
+              )}
+
+              <button
+                onClick={() =>
+                  setEditingField(editingField === key ? null : key)
+                }
+                style={{ marginLeft: "10px" }}
+              >
+                {editingField === key ? "Save" : "Edit"}
+              </button>
+            </div>
+          ))}
         </div>
       </div>
     </div>
