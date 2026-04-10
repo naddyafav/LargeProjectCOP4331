@@ -6,6 +6,8 @@ export default function Home() {
 
   const [editingField, setEditingField] = useState<string | null>(null);
   const [userData, setUserData] = useState({
+    "First Name": "Ben",
+    "Last Name": "Andrew",
     username: "Ben123",
     email: "ben@example.com",
   });
