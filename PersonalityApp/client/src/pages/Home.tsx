@@ -1,16 +1,40 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Clouds from "../components/Clouds";
 
 export default function Home() {
 
-  const [editingField, setEditingField] = useState<string | null>(null);
-  const [userData, setUserData] = useState({
-    "First Name": "Ben",
-    "Last Name": "Andrew",
-    username: "Ben123",
-    email: "ben@example.com",
-  });
+  const [userData, setUserData] = useState(null);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const token = localStorage.getItem("token");
+
+        const response = await fetch("http://104.236.41.135:5050/user", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch user");
+        }
+
+        const data = await response.json();
+
+        setUserData(data);
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUser();
+  }, []);
 
   return (
     <div
@@ -47,31 +71,12 @@ export default function Home() {
         </div>
 
         <div className="profile-card">
-          {Object.entries(userData).map(([key, value]) => (
-            <div key={key} style={{ marginBottom: "1rem" }}>
-              <strong>{key}:</strong>{" "}
+          <h2>Profile</h2>
 
-              {editingField === key ? (
-                <input
-                  value={value}
-                  onChange={(e) =>
-                    setUserData({ ...userData, [key]: e.target.value })
-                  }
-                />
-              ) : (
-                <span>{value}</span>
-              )}
-
-              <button
-                onClick={() =>
-                  setEditingField(editingField === key ? null : key)
-                }
-                style={{ marginLeft: "10px" }}
-              >
-                {editingField === key ? "Save" : "Edit"}
-              </button>
-            </div>
-          ))}
+          <p><strong>First Name:</strong> {userData?.firstName}</p>
+          <p><strong>Last Name:</strong> {userData?.lastName}</p>
+          <p><strong>Username:</strong> {userData?.username}</p>
+          <p><strong>Email:</strong> {userData?.email}</p>
         </div>
       </div>
     </div>
