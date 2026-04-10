@@ -3,3 +3,18 @@ html, body {
   padding: 0;
   overflow-x: hidden; /* prevents horizontal scroll */
 }
+
+.profile-button {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  background-color: #2d2d2d;
+  color: white;
+  transition: 0.2s;
+}
+
+.profile-button:hover {
+  background-color: #444;
+}

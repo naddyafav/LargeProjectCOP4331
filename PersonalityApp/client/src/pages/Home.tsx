@@ -5,6 +5,13 @@ import Clouds from "../components/Clouds";
 export default function Home() {
 
   const [userData, setUserData] = useState(null);
+  const navigate = useNavigate;
+  const goToQuiz = () => { navigate("/quiz"); };
+  const goToFriends = () => { navigate("/friends"); };
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    navigate("/login");
+  };
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -28,8 +35,6 @@ export default function Home() {
         setUserData(data);
       } catch (err) {
         console.error(err);
-      } finally {
-        setLoading(false);
       }
     };
 
@@ -77,6 +82,26 @@ export default function Home() {
           <p><strong>Last Name:</strong> {userData?.lastName}</p>
           <p><strong>Username:</strong> {userData?.username}</p>
           <p><strong>Email:</strong> {userData?.email}</p>
+          <p><strong>Friends:</strong> {userData?.friends}</p>
+        </div>
+        <div style={{
+            display: "flex",
+            justifyContent: "space-between",
+            marginTop: "20px",
+            gap: "10px"
+          }}
+        >
+          <button onClick={goToQuiz} className="profile-button">
+            Quiz
+          </button>
+
+          <button onClick={handleLogout} className="profile-button">
+            Logout
+          </button>
+
+          <button onClick={goToFriends} className="profile-button">
+            Friends
+          </button>
         </div>
       </div>
     </div>
