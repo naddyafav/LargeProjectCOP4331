@@ -42,42 +42,15 @@ export default function Home() {
   }, []);
 
   return (
-    <div
-      className="d-flex justify-content-center align-items-center"
-      style={{ width: "100%", height: "100vh", backgroundColor: "#ACDFFA", position: "relative", overflow: "hidden" }}
-    >
-      
+    <div className="page-center page-sky">
       <Clouds />
-
       {/* Card */}
-      <div
-        className="p-4"
-        style={{
-          width: "100%",
-          maxWidth: "420px",
-          backgroundColor: "#f8f9fa",
-          borderRadius: "20px",
-          border: "6px solid #7aa2e3",
-          boxShadow: "0 4px 15px rgba(0,0,0,0.1)",
-          zIndex: 1,
-        }}
-      >
+      <div className="card">
         <div className="text-center mb-4">
-          <div
-            style={{
-              width: "70px",
-              height: "70px",
-              backgroundColor: "#7aa2e3",
-              borderRadius: "50%",
-              margin: "0 auto",
-            }}
-          ></div>
-          <h2 style={{ color: "#7aa2e3", fontWeight: 600 }}>Profile</h2>
+          <h2 className="page-header">Profile</h2>
         </div>
 
-        <div className="profile-card">
-          <h2>Profile</h2>
-
+        <div className="page-text">
           <p><strong>First Name:</strong> {userData?.firstName}</p>
           <p><strong>Last Name:</strong> {userData?.lastName}</p>
           <p><strong>Username:</strong> {userData?.username}</p>
@@ -91,17 +64,9 @@ export default function Home() {
             gap: "10px"
           }}
         >
-          <button onClick={goToQuiz} className="profile-button">
-            Quiz
-          </button>
-
-          <button onClick={handleLogout} className="profile-button">
-            Logout
-          </button>
-
-          <button onClick={goToFriends} className="profile-button">
-            Friends
-          </button>
+          <button onClick={goToQuiz} className="button">Quiz</button>
+          <button onClick={handleLogout} className="button">Logout</button>
+          <button onClick={goToFriends} className="button">Friends</button>
         </div>
       </div>
     </div>

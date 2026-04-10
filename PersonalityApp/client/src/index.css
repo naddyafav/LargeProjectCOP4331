@@ -4,17 +4,67 @@ html, body {
   overflow-x: hidden; /* prevents horizontal scroll */
 }
 
-.profile-button {
-  flex: 1;
-  padding: 10px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  background-color: #2d2d2d;
+.button {
+  width: 100%;
+  background-color: #7aa2e3;
   color: white;
-  transition: 0.2s;
+  font-weight: 500;
+
+  border: none;
+  border-radius: 10px;
+
+  padding: 10px 12px;
+  cursor: pointer;
+
+  transition: 0.2s ease;
 }
 
-.profile-button:hover {
-  background-color: #444;
+.button:hover {
+  background-color: #6a92d6;
+}
+
+.card {
+  width: 100%;
+  max-width: 420px;
+
+  padding: 1rem;
+
+  background-color: #f8f9fa;
+
+  border-radius: 20px;
+  border: 6px solid #7aa2e3;
+
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+
+  z-index: 1;
+}
+
+.page-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 100%;
+  height: 100vh;
+
+  position: relative;
+  overflow: hidden;
+}
+
+.page-sky {
+  background-color: "#ACDFFA";
+}
+
+.page-header {
+  color: #7aa2e3;
+  font-weight: 600;
+}
+
+.page-text {
+  color: #7aa2e3;
+  font-weight: 400;
+}
+
+.link-color {
+  color: "#7aa2e3"
 }

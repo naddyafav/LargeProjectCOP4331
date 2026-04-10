@@ -61,46 +61,15 @@ export default function Registration() {
   const inputStyle = { backgroundColor: "#e9ecef", border: "none" };
 
   return (
-    <div
-      className="d-flex justify-content-center align-items-center"
-      style={{ width: "100%", height: "100vh", backgroundColor: "#2F344B", position: "relative", overflow: "hidden" }}
-    >
-      
+    <div className="page-center page-sky">
+          
       <Clouds />
-
-      {/* CARD */}
-      <div
-        className="p-4"
-        style={{
-          width: "100%",
-          maxWidth: "420px",
-          backgroundColor: "#f8f9fa",
-          borderRadius: "20px",
-          border: "6px solid #7aa2e3",
-          boxShadow: "0 4px 15px rgba(0,0,0,0.1)",
-          zIndex: 1,
-        }}
-      >
-        {/* Icon */}
-        <div className="text-center mb-2">
-          <div
-            style={{
-              width: "70px",
-              height: "70px",
-              backgroundColor: "#000000",
-              borderRadius: "50%",
-              margin: "0 auto",
-            }}
-          ></div>
+    
+      {/* Card */}
+      <div className="card">
+        <div className="text-center mb-4">
+          <h2 className="page-header">Registration</h2>
         </div>
-
-        {/* Title */}
-        <h2
-          className="text-center mb-4"
-          style={{ color: "#7aa2e3", fontWeight: "600" }}
-        >
-          Register
-        </h2>
 
         <form onSubmit={handleSubmit}>
           {/* First + Last */}
@@ -162,14 +131,7 @@ export default function Registration() {
           {error && <div style={{ color: "red", marginBottom: "1rem" }}>{error}</div>}
 
           {/* Button */}
-          <button
-            className="btn w-100"
-            style={{
-              backgroundColor: "#000000",
-              color: "white",
-              fontWeight: "500",
-            }}
-          >
+          <button className="button" style={{ backgroundColor: "#000"}}>
             Register
           </button>
         </form>
@@ -177,7 +139,7 @@ export default function Registration() {
         {/* Footer */}
         <p className="text-center mt-3 mb-0">
           Have an account?{" "}
-          <a href="/login" style={{ color: "#7aa2e3" }}>
+          <a href="/login" className="link-color">
             Login Now!
           </a>
         </p>
