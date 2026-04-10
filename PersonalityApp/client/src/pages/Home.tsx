@@ -5,7 +5,7 @@ import Clouds from "../components/Clouds";
 export default function Home() {
 
   const [userData, setUserData] = useState(null);
-  const navigate = useNavigate;
+  const navigate = useNavigate();
   const goToQuiz = () => { navigate("/quiz"); };
   const goToFriends = () => { navigate("/friends"); };
   const handleLogout = () => {
