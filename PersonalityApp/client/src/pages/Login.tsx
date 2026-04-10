@@ -22,7 +22,6 @@ export default function Login() {
 
       if (response.ok) {
         localStorage.setItem("token", data.token);
-        localStorage.setItem("user", JSON.stringify(data.user));
         navigate("/home");
       } else {
         setError(data.error || "Login failed");
