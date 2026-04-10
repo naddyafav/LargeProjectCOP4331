@@ -36,10 +36,7 @@ export default function Login() {
 
   return (
     <div className="page-center page-sky">
-      
       <Clouds />
-
-      {/* Card */}
       <div className="card">
         <div className="text-center mb-4">
           <h2 className="page-header">Login</h2>

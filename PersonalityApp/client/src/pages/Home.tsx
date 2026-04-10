@@ -5,6 +5,7 @@ import Clouds from "../components/Clouds";
 export default function Home() {
 
   const [userData, setUserData] = useState(null);
+  const [error, setError] = useState("");
   const navigate = useNavigate();
   const goToQuiz = () => { navigate("/quiz"); };
   const goToFriends = () => { navigate("/friends"); };
@@ -26,15 +27,16 @@ export default function Home() {
           },
         });
 
-        if (!response.ok) {
-          throw new Error("Failed to fetch user");
-        }
-
         const data = await response.json();
 
-        setUserData(data);
+        if (response.ok) {
+          setUserData(data);
+        } else {
+          setError(data.error || "Failed to fetch user");
+        }
       } catch (err) {
         console.error(err);
+        setError("Server error. Try again later.");
       }
     };
 
@@ -57,6 +59,9 @@ export default function Home() {
           <p><strong>Email:</strong> {userData?.email}</p>
           <p><strong>Friends:</strong> {userData?.friends}</p>
         </div>
+
+        {error && <p style={{ color: "red" }}>{error}</p>}
+
         <div style={{
             display: "flex",
             justifyContent: "space-between",
