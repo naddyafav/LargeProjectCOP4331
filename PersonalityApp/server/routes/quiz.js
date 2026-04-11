@@ -97,7 +97,7 @@ router.post('/submit', requireAuth, async (req, res) => {
 
     // Save the result to the user document
     await User.findByIdAndUpdate(req.user.userId, {
-      personalityResult: matchedProfile.name,
+      personalityType: matchedProfile.name,
     });
 
     return res.status(200).json({ result: matchedProfile });

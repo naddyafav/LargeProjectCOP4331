@@ -47,7 +47,7 @@ const userSchema = new mongoose.Schema({
   // Stores the matched cloud profile name after completing the quiz
   // e.g. "Cirrus", "Cumulus", "Cumulonimbus", etc.
   // null means the user has not taken the quiz yet.
-  personalityResult: {
+  personalityType: {
     type: String,
     default: null
   }
