@@ -131,7 +131,7 @@ export default function Registration() {
           {error && <div style={{ color: "red", marginBottom: "1rem" }}>{error}</div>}
 
           {/* Button */}
-          <button className="button" style={{ backgroundColor: "#000"}}>
+          <button className="button">
             Register
           </button>
         </form>
