@@ -4,7 +4,15 @@ import Clouds from "../components/Clouds";
 
 export default function Home() {
 
-  const [userData, setUserData] = useState(null);
+  type User = {
+    firstName: string;
+    lastName: string;
+    username: string;
+    email: string;
+    friends: any[];
+  };
+
+  const [userData, setUserData] = useState<User | null>(null);
   const [error, setError] = useState("");
   const navigate = useNavigate();
   const goToQuiz = () => { navigate("/quiz"); };
