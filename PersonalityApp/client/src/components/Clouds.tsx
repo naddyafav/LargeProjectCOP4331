@@ -93,7 +93,7 @@ export default function Clouds() {
                 key: `loop-${i}`,
                 src,
                 style: { 
-                position: "absolute", 
+                position: "absolute" as const,
                 top: `${top}%`, 
                 width: `${width}px`, 
                 left,
