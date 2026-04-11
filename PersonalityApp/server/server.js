@@ -10,6 +10,8 @@ import registerRoutes from "./routes/regi.js";
 import friendRoutes from "./routes/friends.js";
 import passwordRoutes from "./routes/password.js";
 import quizRoutes from "./routes/quiz.js";
+
+console.log("SECRET:", process.env.ACCESS_TOKEN_SECRET);
  
 const PORT = process.env.PORT || 5050;
 const app = express();
