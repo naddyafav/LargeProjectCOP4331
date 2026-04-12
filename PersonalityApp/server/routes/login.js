@@ -39,6 +39,8 @@ router.post("/", async (req, res) => {
       });
     }
 
+    console.log("Signing with secret:", process.env.ACCESS_TOKEN_SECRET);
+    console.log("Token will be:", jwt.sign({ test: 1 }, process.env.ACCESS_TOKEN_SECRET));
     const token = jwt.sign(
       {
         userId: user._id
