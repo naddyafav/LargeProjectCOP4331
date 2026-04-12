@@ -127,11 +127,11 @@ export default function Home() {
           <div>
             <strong style={{color: "#7aa2e3"}}>Friends:</strong>
 
-            {userData?.friends ? (
+            {userData?.friends.length ? (
               <ul className="friends-list">
-                {userData?.friends?.map((friend, index) => (
-                  <li key={index} className="friend-item">
-                    {friend}
+                {userData.friends.map((friend) => (
+                  <li key={friend._id} className="friend-item">
+                    {friend.username}
                   </li>
                 ))}
               </ul>
