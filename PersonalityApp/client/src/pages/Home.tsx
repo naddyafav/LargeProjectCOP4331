@@ -10,10 +10,18 @@ export default function Home() {
     username: string;
     email: string;
     friends: any[];
-    personalityType: string;
+  };
+
+  type CloudResult = {
+    name: string;
+    emoji: string;
+    altitude: string;
+    description: string;
+    traits: string[];
   };
 
   const [userData, setUserData] = useState<User | null>(null);
+  const [result, setResult]   = useState<CloudResult | null>(null);
   const [error, setError] = useState("");
   const navigate = useNavigate();
   const goToQuiz = () => { navigate("/quiz"); };
@@ -24,6 +32,11 @@ export default function Home() {
   };
 
   useEffect(() => {
+    const stored = localStorage.getItem("quizResult");
+    if (stored) {
+      setResult(JSON.parse(stored));
+    }
+    
     const fetchUser = async () => {
       try {
         const token = localStorage.getItem("token");
@@ -55,6 +68,27 @@ export default function Home() {
   return (
     <div className="page-center page-sky">
       <Clouds />
+
+      {/* Personality Card */}
+      <div className="card-large">
+        <div style={{ textAlign: "center", marginBottom: "20px" }}>
+          <span style={{ fontSize: "4rem" }}>{result.emoji}</span>
+          <h1 style={{ color: "#7aa2e3", fontWeight: 700, margin: "8px 0 2px" }}> {result.name} </h1>
+          <p style={{ color: "#aaa", fontSize: "0.85rem", margin: 0 }}>{result.altitude}</p>
+        </div>
+
+        <p style={{ color: "#444", lineHeight: 1.7, marginBottom: "20px" }}> {result.description} </p>
+
+        <div style={{ display: "flex", gap: "8px", flexWrap: "wrap", marginBottom: "24px" }}>
+          {result.traits.map((trait) => (
+            <span key={trait} className="trait-style">
+              {trait}
+            </span>
+          ))}
+        </div>
+        <button onClick={goToQuiz} className="button">Retake Quiz</button>
+      </div>
+          
       {/* Card */}
       <div className="card">
         <div className="text-center mb-4">
@@ -78,7 +112,6 @@ export default function Home() {
             gap: "10px"
           }}
         >
-          <button onClick={goToQuiz} className="button">Quiz</button>
           <button onClick={handleLogout} className="button">Logout</button>
           <button onClick={goToFriends} className="button">Friends</button>
         </div>

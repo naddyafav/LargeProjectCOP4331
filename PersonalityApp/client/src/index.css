@@ -68,3 +68,23 @@ html, body {
 .link-color {
   color: #7aa2e3
 }
+
+.card-large {
+  width: 100%;
+  max-width: 560px;
+  background-color: #f8f9fa;
+  border-radius: 20px;
+  border: 6px solid #7aa2e3;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  padding: 32px;
+}
+
+.trait-badge {
+  background-color: #d6eaff;
+  color: #4a7cc7;
+  border-radius: 20px;
+  padding: 4px 14px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  display: inline-block; /* ensures proper spacing */
+}
