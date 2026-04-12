@@ -10,6 +10,7 @@ import registerRoutes from "./routes/regi.js";
 import friendRoutes from "./routes/friends.js";
 import passwordRoutes from "./routes/password.js";
 import quizRoutes from "./routes/quiz.js";
+import userRoutes from "./routes/user.js";
 
 console.log("SECRET:", process.env.ACCESS_TOKEN_SECRET);
  
@@ -28,6 +29,8 @@ app.use("/friends", friendRoutes);
 app.use("/password", passwordRoutes);
 app.use("/quiz", quizRoutes);
  
+app.use("/user", userRoutes);
+
 // Optional test route
 app.get("/", (req, res) => {
   res.send("Server is running.");
