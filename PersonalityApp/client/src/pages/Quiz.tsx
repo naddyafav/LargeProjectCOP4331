@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-const API = "http://localhost:5050";
+const API = "http://104.236.41.135:5050";
 
 type Option = {
   label: string;
