@@ -10,6 +10,7 @@ export default function Home() {
     username: string;
     email: string;
     friends: any[];
+    personalityType: string;
   };
 
   const [userData, setUserData] = useState<User | null>(null);
