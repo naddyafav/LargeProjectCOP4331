@@ -97,9 +97,9 @@ export default function Quiz() {
 
       if (res.ok) {
         // Save the full result profile to localStorage so Home can read it
-        const user = JSON.parse(localStorage.getItem("user") || "{}");
-        user.personalityType = data.result.name;
-        localStorage.setItem("user", JSON.stringify(user));
+        //const user = JSON.parse(localStorage.getItem("user") || "{}");
+        //user.personalityType = data.result.name;
+        //localStorage.setItem("user", JSON.stringify(user));
         localStorage.setItem("quizResult", JSON.stringify(data.result));
         navigate("/home");
       } else {
@@ -150,18 +150,18 @@ export default function Quiz() {
 
       {/* Progress bar */}
       <div style={{ width: "100%", maxWidth: "560px", marginBottom: "12px", zIndex: "1" }}>
-        <div style={{ height: "6px", backgroundColor: "rgba(255,255,255,0.3)", borderRadius: "3px" }}>
+        <div style={{ height: "6px", backgroundColor: "rgba(124, 124, 124, 0.4)", borderRadius: "3px" }}>
           <div
             style={{
               height: "6px",
               width: `${progress}%`,
-              backgroundColor: "#444",
+              backgroundColor: "#555",
               borderRadius: "3px",
               transition: "width 0.3s ease",
             }}
           />
         </div>
-        <p style={{ color: "rgba(255,255,255,0.8)", fontSize: "0.8rem", marginTop: "4px", textAlign: "right" }}>
+        <p style={{ color: "rgba(124, 124, 124, 0.8)", fontSize: "0.8rem", marginTop: "4px", textAlign: "right" }}>
           {current + 1} / {questions.length}
         </p>
       </div>
