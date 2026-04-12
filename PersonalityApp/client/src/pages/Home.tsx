@@ -66,7 +66,7 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="page-center page-sky">
+    <div className="page-center page-sky" style={{ flexDirection: "column" }}>
       <Clouds />
 
       {/* PAGE TITLE */}
