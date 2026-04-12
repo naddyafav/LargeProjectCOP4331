@@ -125,7 +125,7 @@ export default function Quiz() {
     return (
       <div style={containerStyle}>
         <p style={{ color: "red" }}>{error}</p>
-        <button onClick={goToHome} className="button">
+        <button onClick={goToHome} className="button" style={{ width: "30px" }}>
             Home
           </button>
       </div>
@@ -149,7 +149,7 @@ export default function Quiz() {
       <Clouds/>
 
       {/* Progress bar */}
-      <div style={{ width: "100%", maxWidth: "560px", marginBottom: "12px" }}>
+      <div style={{ width: "100%", maxWidth: "560px", marginBottom: "12px", zIndex: "1" }}>
         <div style={{ height: "6px", backgroundColor: "rgba(255,255,255,0.3)", borderRadius: "3px" }}>
           <div
             style={{
@@ -167,7 +167,7 @@ export default function Quiz() {
       </div>
 
       {/* Question card */}
-      <div style={cardStyle}>
+      <div style={cardStyle, zIndex: "1"}>
         <h2 style={{ color: "#7aa2e3", fontWeight: 600, marginBottom: "24px", lineHeight: 1.4 }}>
           {question.text}
         </h2>
