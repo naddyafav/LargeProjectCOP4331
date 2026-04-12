@@ -1,5 +1,6 @@
-import { useState, useMemo } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Clouds from "../components/Clouds";
 
 export default function Login() {
   const [username, setUsername] = useState("");
@@ -212,11 +213,7 @@ export default function Login() {
 
           {error && <p style={{ color: "red" }}>{error}</p>}
 
-          <button
-            type="submit"
-            className="btn w-100"
-            style={{ backgroundColor: "#7aa2e3", color: "white", fontWeight: 500 }}
-          >
+          <button type="submit" className="button">
             Login
           </button>
         </form>

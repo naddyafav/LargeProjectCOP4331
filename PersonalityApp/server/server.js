@@ -28,7 +28,10 @@ app.use("/register", registerRoutes);
 app.use("/friends", friendRoutes);
 app.use("/password", passwordRoutes);
 app.use("/quiz", quizRoutes);
+<<<<<<< HEAD
  
+=======
+>>>>>>> 4b78a3bcc945a46302fe51f4b86f2715050ae70a
 app.use("/user", userRoutes);
 
 // Optional test route
