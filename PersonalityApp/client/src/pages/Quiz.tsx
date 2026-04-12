@@ -15,7 +15,6 @@ export default function Quiz() {
               <h2 className="page-header">Quiz</h2>
             </div>
 
-        // Button
         <div>
           <button onClick={goToHome} className="button">
             Home

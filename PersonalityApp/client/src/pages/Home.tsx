@@ -69,51 +69,50 @@ export default function Home() {
     <div className="page-center page-sky">
       <Clouds />
 
-      {/* Personality Card */}
-      <div className="card-large">
-        <div style={{ textAlign: "center", marginBottom: "20px" }}>
-          <span style={{ fontSize: "4rem" }}>{result.emoji}</span>
-          <h1 style={{ color: "#7aa2e3", fontWeight: 700, margin: "8px 0 2px" }}> {result.name} </h1>
-          <p style={{ color: "#aaa", fontSize: "0.85rem", margin: 0 }}>{result.altitude}</p>
-        </div>
+      <div className="card-row">
 
-        <p style={{ color: "#444", lineHeight: 1.7, marginBottom: "20px" }}> {result.description} </p>
+        {/* Profile Card: Left */}
+        <div className="card">
+          <div className="text-center mb-4">
+            <h2 className="page-header">Profile</h2>
+          </div>
 
-        <div style={{ display: "flex", gap: "8px", flexWrap: "wrap", marginBottom: "24px" }}>
-          {result.traits.map((trait) => (
-            <span key={trait} className="trait-style">
-              {trait}
-            </span>
-          ))}
-        </div>
-        <button onClick={goToQuiz} className="button">Retake Quiz</button>
-      </div>
-          
-      {/* Card */}
-      <div className="card">
-        <div className="text-center mb-4">
-          <h2 className="page-header">Profile</h2>
-        </div>
+          <div className="page-text">
+            <p><strong>First Name:</strong> {userData?.firstName}</p>
+            <p><strong>Last Name:</strong> {userData?.lastName}</p>
+            <p><strong>Username:</strong> {userData?.username}</p>
+            <p><strong>Email:</strong> {userData?.email}</p>
+            <p><strong>Friends:</strong> {userData?.friends}</p>
+          </div>
 
-        <div className="page-text">
-          <p><strong>First Name:</strong> {userData?.firstName}</p>
-          <p><strong>Last Name:</strong> {userData?.lastName}</p>
-          <p><strong>Username:</strong> {userData?.username}</p>
-          <p><strong>Email:</strong> {userData?.email}</p>
-          <p><strong>Friends:</strong> {userData?.friends}</p>
-        </div>
+          {error && <p style={{ color: "red" }}>{error}</p>}
 
-        {error && <p style={{ color: "red" }}>{error}</p>}
-
-        <div style={{
-            display: "flex",
-            justifyContent: "space-between",
-            marginTop: "20px",
-            gap: "10px"
-          }}
-        >
           <button onClick={handleLogout} className="button">Logout</button>
-          <button onClick={goToFriends} className="button">Friends</button>
+        </div>
+
+        {/* Personality Card: Middle */}
+        <div className="card-large">
+          <div style={{ textAlign: "center", marginBottom: "20px" }}>
+            <span style={{ fontSize: "4rem" }}>{result.emoji}</span>
+            <h1 style={{ color: "#7aa2e3", fontWeight: 700, margin: "8px 0 2px" }}> {result.name} </h1>
+            <p style={{ color: "#aaa", fontSize: "0.85rem", margin: 0 }}>{result.altitude}</p>
+          </div>
+
+          <p style={{ color: "#444", lineHeight: 1.7, marginBottom: "20px" }}> {result.description} </p>
+
+          <div style={{ display: "flex", gap: "8px", flexWrap: "wrap", marginBottom: "24px" }}>
+            {result.traits.map((trait) => (
+              <span key={trait} className="trait-style">
+                {trait}
+              </span>
+            ))}
+          </div>
+
+          <button onClick={goToQuiz} className="button">Retake Quiz</button>
+        </div>
+            
+        <div className="card">
+            <button onClick={goToFriends} className="button">Friends</button>
         </div>
       </div>
     </div>

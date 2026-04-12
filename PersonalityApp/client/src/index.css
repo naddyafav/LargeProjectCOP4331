@@ -88,3 +88,13 @@ html, body {
   font-weight: 500;
   display: inline-block; /* ensures proper spacing */
 }
+
+.card-row {
+  display: flex;
+  justify-content: center;     /* center the whole row */
+  align-items: flex-start;     /* align tops of cards */
+  gap: 30px;                   /* space between cards */
+  width: 100%;
+  max-width: 1200px;
+  padding: 20px;
+}

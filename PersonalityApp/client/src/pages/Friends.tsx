@@ -14,8 +14,7 @@ export default function Friends() {
                 <div className="text-center mb-4">
                   <h2 className="page-header">Friends</h2>
                 </div>
-
-        // Button
+                
         <div>
           <button onClick={goToHome} className="button">
             Home
