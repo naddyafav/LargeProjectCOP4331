@@ -83,6 +83,7 @@ html, body {
   border: 6px solid #7aa2e3;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
   padding: 32px;
+  z-index: 1;
 }
 
 .trait-badge {
