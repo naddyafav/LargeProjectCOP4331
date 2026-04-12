@@ -98,7 +98,7 @@ export default function Home() {
         </div>
 
         {/* Personality Card: Middle */}
-        
+        {return ? (
         <div className="card-large">
           <div style={{ textAlign: "center", marginBottom: "20px" }}>
             <span style={{ fontSize: "4rem" }}>{result.emoji}</span>
@@ -118,6 +118,9 @@ export default function Home() {
 
           <button onClick={goToQuiz} className="button">Retake Quiz</button>
         </div>
+        ) : (
+          
+        )}
             
         <div className="card">
             <button onClick={goToFriends} className="button">Friends</button>
