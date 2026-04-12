@@ -69,6 +69,13 @@ export default function Home() {
     <div className="page-center page-sky">
       <Clouds />
 
+      {/* PAGE TITLE */}
+      <div style={{ textAlign: "center", marginBottom: "20px" }}>
+        <h1 className="page-title">
+          Welcome, {userData?.firstName}
+        </h1>
+      </div>
+
       <div className="card-row">
 
         {/* Profile Card: Left */}

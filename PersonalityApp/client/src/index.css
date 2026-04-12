@@ -60,6 +60,11 @@ html, body {
   font-weight: 600;
 }
 
+.page-title {
+  color: #2f5ca5;
+  font-weight: 800;
+}
+
 .page-text {
   color: #7aa2e3;
   font-weight: 400;
