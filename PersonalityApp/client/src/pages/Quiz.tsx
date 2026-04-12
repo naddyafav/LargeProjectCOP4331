@@ -125,7 +125,7 @@ export default function Quiz() {
     return (
       <div style={containerStyle}>
         <p style={{ color: "red" }}>{error}</p>
-        <button onClick={goToHome} className="button" style={{ width: "30px" }}>
+        <button onClick={goToHome} className="button" style={{ width: "100px" }}>
             Home
           </button>
       </div>
@@ -155,7 +155,7 @@ export default function Quiz() {
             style={{
               height: "6px",
               width: `${progress}%`,
-              backgroundColor: "#fff",
+              backgroundColor: "#444",
               borderRadius: "3px",
               transition: "width 0.3s ease",
             }}
