@@ -86,8 +86,8 @@ html, body {
 }
 
 .trait-badge {
-  background-color: #d6eaff;
-  color: #4a7cc7;
+  background-color: #f8f9fa;
+  color: #7aa2e3;
   border-radius: 20px;
   padding: 4px 14px;
   font-size: 0.85rem;
@@ -103,4 +103,34 @@ html, body {
   width: 100%;
   max-width: 1200px;
   padding: 20px;
+}
+
+.friends-list {
+  list-style: none;
+  padding: 0;
+  margin-top: 10px;
+
+  max-height: 200px;
+  overflow-y: auto;
+
+  border: 2px solid #7aa2e3;
+  border-radius: 10px;
+
+  background-color: #f8f9fa;
+}
+
+.friend-item {
+  padding: 10px 12px;
+  border-bottom: 1px solid #7e7e7e;
+
+  color: #7aa2e3;
+}
+
+.friend-item:last-child {
+  border-bottom: none;
+}
+
+.friend-item:hover {
+  background-color: #6a92d6;
+  cursor: pointer;
 }

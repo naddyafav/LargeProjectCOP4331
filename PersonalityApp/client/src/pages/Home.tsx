@@ -70,10 +70,8 @@ export default function Home() {
       <Clouds />
 
       {/* PAGE TITLE */}
-      <div style={{ textAlign: "center", marginBottom: "20px" }}>
-        <h1 className="page-title">
-          Welcome, {userData?.firstName}
-        </h1>
+      <div className="page-title" style={{ textAlign: "center", marginBottom: "20px" }}>
+        <h1>Welcome, {userData?.firstName}</h1>
       </div>
 
       <div className="card-row">
@@ -89,7 +87,6 @@ export default function Home() {
             <p><strong>Last Name:</strong> {userData?.lastName}</p>
             <p><strong>Username:</strong> {userData?.username}</p>
             <p><strong>Email:</strong> {userData?.email}</p>
-            <p><strong>Friends:</strong> {userData?.friends}</p>
           </div>
 
           {error && <p style={{ color: "red" }}>{error}</p>}
@@ -119,14 +116,26 @@ export default function Home() {
             <button onClick={goToQuiz} className="button">Retake Quiz</button>
           </div>
         ) : (
-          <div className="card-large">
+          <div className="card-large" style={{textAlign: "center"}}>
             <h1 className="page-header">No Quiz Results Yet.</h1>
             <button onClick={goToQuiz} className="button">Take Quiz</button>
           </div>
         )}
-            
+        
+        {/* Friends Card: Right */}
         <div className="card">
-            <button onClick={goToFriends} className="button">Friends</button>
+          <div>
+            <strong>Friends:</strong>
+
+            <ul className="friends-list">
+              {userData?.friends?.map((friend, index) => (
+                <li key={index} className="friend-item">
+                  {friend}
+                </li>
+              ))}
+            </ul>
+          </div>
+            <button onClick={goToFriends} className="button">Find Friends</button>
         </div>
       </div>
     </div>

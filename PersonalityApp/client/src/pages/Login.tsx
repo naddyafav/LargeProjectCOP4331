@@ -39,10 +39,8 @@ export default function Login() {
       <Clouds />
 
       {/* PAGE TITLE */}
-      <div style={{ textAlign: "center", marginBottom: "20px" }}>
-        <h1 className="page-title">
-          Personality Connect!
-        </h1>
+      <div className="page-title" style={{ textAlign: "center", marginBottom: "20px" }}>
+        <h1>Personality Connect!</h1>
       </div>
 
       <div className="card">
