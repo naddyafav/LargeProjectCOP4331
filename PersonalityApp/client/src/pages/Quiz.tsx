@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import Clouds from "../components/Clouds";
 
 const API = "http://104.236.41.135:5050";
 
@@ -35,6 +36,7 @@ export default function Quiz() {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError]           = useState("");
   const navigate = useNavigate();
+  const goToHome = () => { navigate("/home"); };
 
   // ── Fetch questions on mount ──────────────────────────────────────────────
   useEffect(() => {
@@ -123,6 +125,9 @@ export default function Quiz() {
     return (
       <div style={containerStyle}>
         <p style={{ color: "red" }}>{error}</p>
+        <button onClick={goToHome} className="button">
+            Home
+          </button>
       </div>
     );
   }
@@ -140,6 +145,9 @@ export default function Quiz() {
 
   return (
     <div style={containerStyle}>
+
+      <Clouds/>
+
       {/* Progress bar */}
       <div style={{ width: "100%", maxWidth: "560px", marginBottom: "12px" }}>
         <div style={{ height: "6px", backgroundColor: "rgba(255,255,255,0.3)", borderRadius: "3px" }}>
