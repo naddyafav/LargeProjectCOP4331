@@ -26,7 +26,6 @@ export default function Home() {
     const fetchUser = async () => {
       try {
         const token = localStorage.getItem("token");
-        console.log(token); // check if token is being got
 
         const response = await fetch("http://104.236.41.135:5050/user", {
           method: "GET",
@@ -36,13 +35,12 @@ export default function Home() {
           },
         });
 
-        const text = await response.text();
-        console.log("Raw Response:", text);
+        const data = await response.json();
 
         if (response.ok) {
-          setUserData(text);
+          setUserData(data);
         } else {
-          //setError(text.error || "Failed to fetch user");
+          setError(data.error || "Failed to fetch user");
         }
       } catch (err) {
         console.error(err);
