@@ -98,6 +98,7 @@ export default function Home() {
         </div>
 
         {/* Personality Card: Middle */}
+        
         <div className="card-large">
           <div style={{ textAlign: "center", marginBottom: "20px" }}>
             <span style={{ fontSize: "4rem" }}>{result.emoji}</span>

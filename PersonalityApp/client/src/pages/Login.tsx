@@ -35,7 +35,7 @@ export default function Login() {
   const inputStyle = { backgroundColor: "#e9ecef", border: "none" };
 
   return (
-    <div className="page-center page-sky">
+    <div className="page-center page-sky" style={{ flexDirection: "column" }}>
       <Clouds />
 
       {/* PAGE TITLE */}
