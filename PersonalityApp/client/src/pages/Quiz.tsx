@@ -167,7 +167,7 @@ export default function Quiz() {
       </div>
 
       {/* Question card */}
-      <div style={cardStyle, zIndex: "1"}>
+      <div style={cardStyle}>
         <h2 style={{ color: "#7aa2e3", fontWeight: 600, marginBottom: "24px", lineHeight: 1.4 }}>
           {question.text}
         </h2>
@@ -216,6 +216,7 @@ const cardStyle: React.CSSProperties = {
   border: "6px solid #7aa2e3",
   boxShadow: "0 4px 15px rgba(0,0,0,0.1)",
   padding: "32px",
+  zIndex: "1"
 };
 
 const optionButtonStyle: React.CSSProperties = {
