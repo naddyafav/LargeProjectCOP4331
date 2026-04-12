@@ -98,28 +98,31 @@ export default function Home() {
         </div>
 
         {/* Personality Card: Middle */}
-        {return ? (
-        <div className="card-large">
-          <div style={{ textAlign: "center", marginBottom: "20px" }}>
-            <span style={{ fontSize: "4rem" }}>{result.emoji}</span>
-            <h1 style={{ color: "#7aa2e3", fontWeight: 700, margin: "8px 0 2px" }}> {result.name} </h1>
-            <p style={{ color: "#aaa", fontSize: "0.85rem", margin: 0 }}>{result.altitude}</p>
+        {result ? (
+          <div className="card-large">
+            <div style={{ textAlign: "center", marginBottom: "20px" }}>
+              <span style={{ fontSize: "4rem" }}>{result.emoji}</span>
+              <h1 style={{ color: "#7aa2e3", fontWeight: 700, margin: "8px 0 2px" }}>{result.name}</h1>
+              <p style={{ color: "#aaa", fontSize: "0.85rem", margin: 0 }}>{result.altitude}</p>
+            </div>
+
+            <p style={{ color: "#444", lineHeight: 1.7, marginBottom: "20px" }}>{result.description}</p>
+
+            <div style={{ display: "flex", gap: "8px", flexWrap: "wrap", marginBottom: "24px" }}>
+              {result.traits.map((trait) => (
+                <span key={trait} className="trait-style">
+                  {trait}
+                </span>
+              ))}
+            </div>
+
+            <button onClick={goToQuiz} className="button">Retake Quiz</button>
           </div>
-
-          <p style={{ color: "#444", lineHeight: 1.7, marginBottom: "20px" }}> {result.description} </p>
-
-          <div style={{ display: "flex", gap: "8px", flexWrap: "wrap", marginBottom: "24px" }}>
-            {result.traits.map((trait) => (
-              <span key={trait} className="trait-style">
-                {trait}
-              </span>
-            ))}
-          </div>
-
-          <button onClick={goToQuiz} className="button">Retake Quiz</button>
-        </div>
         ) : (
-          
+          <div className="card-large">
+            <h1 className="page-header">No Quiz Results Yet.</h1>
+            <button onClick={goToQuiz} className="button">Take Quiz</button>
+          </div>
         )}
             
         <div className="card">
