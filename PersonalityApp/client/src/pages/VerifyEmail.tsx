@@ -12,7 +12,7 @@ export default function VerifyEmail() {
     const verify = async () => {
       try {
         const res = await fetch(
-          `http://104.236.41.135/register/verify/${token}`
+          `http://104.236.41.135:5050/register/verify/${token}`
         );
 
         const data = await res.json();
@@ -21,7 +21,6 @@ export default function VerifyEmail() {
           setStatus("success");
           setMessage(data.message || "Email verified successfully!");
 
-          // Redirect after short delay
           setTimeout(() => {
             navigate("/login");
           }, 2000);
