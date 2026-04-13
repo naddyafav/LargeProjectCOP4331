@@ -28,8 +28,6 @@ transporter.verify((error, success) => {
 
 // POST /register
 router.post("/", async (req, res) => {
-  let newUser = null;
-
   try {
     const firstName = req.body.firstName;
     const lastName = req.body.lastName;
@@ -65,7 +63,7 @@ router.post("/", async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, salt);
     const verificationToken = crypto.randomBytes(32).toString("hex");
 
-    newUser = new User({
+    const newUser = new User({
       firstName,
       lastName,
       email: email.toLowerCase(),
@@ -81,14 +79,8 @@ router.post("/", async (req, res) => {
 
     const verificationLink = `${req.protocol}://${req.get("host")}/register/verify/${verificationToken}`;
 
-    console.log("About to send verification email...");
-    console.log("EMAIL_HOST:", process.env.EMAIL_HOST);
-    console.log("EMAIL_PORT:", process.env.EMAIL_PORT);
-    console.log("EMAIL_USERNAME:", process.env.EMAIL_USERNAME);
-    console.log("EMAIL_FROM:", process.env.EMAIL_FROM);
-    console.log("Verification link:", verificationLink);
-
-    const mailResult = await transporter.sendMail({
+    // 不让邮件失败影响注册成功
+    transporter.sendMail({
       from: process.env.EMAIL_FROM,
       to: email.toLowerCase(),
       subject: "Verify your Quiz account",
@@ -98,10 +90,15 @@ router.post("/", async (req, res) => {
         <p>Please click the link below to verify your email:</p>
         <a href="${verificationLink}">${verificationLink}</a>
       `
-    });
-
-    console.log("Mail sent successfully.");
-    console.log("Mail result:", mailResult);
+    })
+      .then((info) => {
+        console.log("Mail sent successfully.");
+        console.log("Mail result:", info);
+      })
+      .catch((mailError) => {
+        console.error("Email sending failed, but user is already registered.");
+        console.error(mailError);
+      });
 
     return res.status(201).json({
       message: "User registered successfully. Please check your email to verify your account."
@@ -115,17 +112,8 @@ router.post("/", async (req, res) => {
     console.error("command:", error.command);
     console.error("FULL ERROR:", error);
 
-    if (newUser && newUser._id) {
-      try {
-        await User.deleteOne({ _id: newUser._id });
-        console.log("Rolled back user because email sending failed.");
-      } catch (rollbackError) {
-        console.error("Rollback failed:", rollbackError);
-      }
-    }
-
     return res.status(500).json({
-      error: error.message || "Registration failed because verification email could not be sent."
+      error: error.message || "Registration failed."
     });
   }
 });
