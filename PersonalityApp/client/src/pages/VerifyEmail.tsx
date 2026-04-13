@@ -5,23 +5,19 @@ export default function VerifyEmail() {
   const { token } = useParams();
   const navigate = useNavigate();
 
-  const [status, setStatus] = useState("verifying"); // verifying | success | error
+  const [status, setStatus] = useState("verifying");
   const [message, setMessage] = useState("");
 
   useEffect(() => {
     const verify = async () => {
       try {
-        const res = await fetch(
-          `http://104.236.41.135/register/verify/${token}`
-        );
-
+        const res = await fetch(`/api/register/verify/${token}`);
         const data = await res.json();
 
         if (res.ok) {
           setStatus("success");
           setMessage(data.message || "Email verified successfully!");
 
-          // Redirect after short delay
           setTimeout(() => {
             navigate("/login");
           }, 2000);
@@ -36,7 +32,9 @@ export default function VerifyEmail() {
       }
     };
 
-    if (token) verify();
+    if (token) {
+      verify();
+    }
   }, [token, navigate]);
 
   return (

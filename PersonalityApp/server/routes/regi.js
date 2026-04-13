@@ -1,35 +1,15 @@
 import express from "express";
 import bcrypt from "bcryptjs";
 import crypto from "crypto";
-import nodemailer from "nodemailer";
+import sgMail from "@sendgrid/mail";
 import User from "../models/User.js";
 
 const router = express.Router();
 
-const transporter = nodemailer.createTransport({
-  host: process.env.EMAIL_HOST,
-  port: Number(process.env.EMAIL_PORT),
-  secure: false,
-  requireTLS: true,
-  auth: {
-    user: process.env.EMAIL_USERNAME,
-    pass: process.env.EMAIL_PASSWORD
-  }
-});
-
-// Optional: verify SMTP connection when server starts
-transporter.verify((error, success) => {
-  if (error) {
-    console.error("SMTP verify failed:", error);
-  } else {
-    console.log("SMTP server is ready to send emails.");
-  }
-});
+sgMail.setApiKey(process.env.EMAIL_PASSWORD);
 
 // POST /register
 router.post("/", async (req, res) => {
-  let newUser = null;
-
   try {
     const firstName = req.body.firstName;
     const lastName = req.body.lastName;
@@ -47,14 +27,17 @@ router.post("/", async (req, res) => {
       });
     }
 
-    const existingUsername = await User.findOne({ username: username });
+    const normalizedEmail = email.toLowerCase().trim();
+    const trimmedUsername = username.trim();
+
+    const existingUsername = await User.findOne({ username: trimmedUsername });
     if (existingUsername) {
       return res.status(409).json({
         error: "Username already taken."
       });
     }
 
-    const existingEmail = await User.findOne({ email: email.toLowerCase() });
+    const existingEmail = await User.findOne({ email: normalizedEmail });
     if (existingEmail) {
       return res.status(409).json({
         error: "Email already in use."
@@ -65,11 +48,11 @@ router.post("/", async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, salt);
     const verificationToken = crypto.randomBytes(32).toString("hex");
 
-    newUser = new User({
-      firstName,
-      lastName,
-      email: email.toLowerCase(),
-      username,
+    const newUser = new User({
+      firstName: firstName.trim(),
+      lastName: lastName.trim(),
+      email: normalizedEmail,
+      username: trimmedUsername,
       password: hashedPassword,
       isVerified: false,
       verificationToken,
@@ -79,18 +62,11 @@ router.post("/", async (req, res) => {
     await newUser.save();
     console.log("User saved to database:", newUser.email);
 
-    const verificationLink = `${req.protocol}://${req.get("host")}/register/verify/${verificationToken}`;
+    const verificationLink = `http://group9.online/register/verify/${verificationToken}`;
 
-    console.log("About to send verification email...");
-    console.log("EMAIL_HOST:", process.env.EMAIL_HOST);
-    console.log("EMAIL_PORT:", process.env.EMAIL_PORT);
-    console.log("EMAIL_USERNAME:", process.env.EMAIL_USERNAME);
-    console.log("EMAIL_FROM:", process.env.EMAIL_FROM);
-    console.log("Verification link:", verificationLink);
-
-    const mailResult = await transporter.sendMail({
+    const msg = {
+      to: normalizedEmail,
       from: process.env.EMAIL_FROM,
-      to: email.toLowerCase(),
       subject: "Verify your Quiz account",
       html: `
         <h2>Welcome to the Quiz App</h2>
@@ -98,10 +74,17 @@ router.post("/", async (req, res) => {
         <p>Please click the link below to verify your email:</p>
         <a href="${verificationLink}">${verificationLink}</a>
       `
-    });
+    };
 
-    console.log("Mail sent successfully.");
-    console.log("Mail result:", mailResult);
+    sgMail
+      .send(msg)
+      .then(() => {
+        console.log("Email sent successfully via SendGrid API.");
+      })
+      .catch((mailError) => {
+        console.error("SendGrid email failed, but user is already registered.");
+        console.error(mailError?.response?.body || mailError.message || mailError);
+      });
 
     return res.status(201).json({
       message: "User registered successfully. Please check your email to verify your account."
@@ -109,23 +92,10 @@ router.post("/", async (req, res) => {
   } catch (error) {
     console.error("===== REGISTRATION ERROR =====");
     console.error("message:", error.message);
-    console.error("code:", error.code);
-    console.error("responseCode:", error.responseCode);
-    console.error("response:", error.response);
-    console.error("command:", error.command);
     console.error("FULL ERROR:", error);
 
-    if (newUser && newUser._id) {
-      try {
-        await User.deleteOne({ _id: newUser._id });
-        console.log("Rolled back user because email sending failed.");
-      } catch (rollbackError) {
-        console.error("Rollback failed:", rollbackError);
-      }
-    }
-
     return res.status(500).json({
-      error: error.message || "Registration failed because verification email could not be sent."
+      error: error.message || "Registration failed."
     });
   }
 });

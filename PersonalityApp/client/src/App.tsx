@@ -16,11 +16,12 @@ function App() {
         <Route path="/home" element={<Home />} />
         <Route path="/quiz" element={<Quiz />} />
         <Route path="/friends" element={<Friends />} />
-        <Route path="/register/verigy/:token" element={<VerifyEmail />} />
+
+        {/* ✅ 修复拼写：verify */}
+        <Route path="/register/verify/:token" element={<VerifyEmail />} />
       </Routes>
     </BrowserRouter>
   );
 }
 
 export default App;
- 

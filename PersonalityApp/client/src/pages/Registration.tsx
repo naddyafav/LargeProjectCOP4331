@@ -6,6 +6,7 @@ export default function Registration() {
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
+
   const [form, setForm] = useState({
     first: "",
     last: "",
@@ -19,60 +20,58 @@ export default function Registration() {
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  try {
-    const response = await fetch("http://104.236.41.135:5050/register", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        firstName: form.first,
-        lastName: form.last,
-        email: form.email,
-        username: form.username,
-        password: form.password,
-      }),
-    });
+    try {
+      const response = await fetch("/api/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          firstName: form.first,
+          lastName: form.last,
+          email: form.email,
+          username: form.username,
+          password: form.password,
+        }),
+      });
 
-    const data = await response.json();
+      const data = await response.json();
 
-    if (response.ok) {
-      console.log("Response if ok.");
-      // Show success message
-      setMessage(data.message);
-      setError(""); // clear previous errors if any
+      if (response.ok) {
+        setMessage(
+          data.message ||
+            "User registered successfully. Please check your email to verify your account."
+        );
+        setError("");
 
-      // Optionally redirect after a few seconds
-      setTimeout(() => {
-        navigate("/login");
-      }, 3000); // wait 3 seconds so user sees the message
-    } else {
-      // Show error returned by API
-      setError(data.error || "Registration failed");
+        setTimeout(() => {
+          navigate("/login");
+        }, 3000);
+      } else {
+        setError(data.error || "Registration failed.");
+        setMessage("");
+      }
+    } catch (err) {
+      console.error(err);
+      setError("Server error. Try again later.");
       setMessage("");
     }
-  } catch (err) {
-    console.error(err);
-    setError("Server error. Try again later.");
-    setMessage("");
-  }
-};
+  };
 
   const inputStyle = { backgroundColor: "#e9ecef", border: "none" };
 
   return (
     <div className="page-center page-sky">
-          
       <Clouds />
-    
-      {/* Card */}
+
       <div className="card">
         <div className="text-center mb-4">
           <h2 className="page-header">Registration</h2>
         </div>
 
         <form onSubmit={handleSubmit}>
-          {/* First + Last */}
           <div className="d-flex gap-2 mb-3">
             <input
               type="text"
@@ -94,7 +93,6 @@ export default function Registration() {
             />
           </div>
 
-          {/* Email */}
           <input
             type="email"
             name="email"
@@ -105,7 +103,6 @@ export default function Registration() {
             required
           />
 
-          {/* Username */}
           <input
             type="text"
             name="username"
@@ -116,7 +113,6 @@ export default function Registration() {
             required
           />
 
-          {/* Password */}
           <input
             type="password"
             name="password"
@@ -127,16 +123,21 @@ export default function Registration() {
             required
           />
 
-          {message && <div style={{ color: "green", marginBottom: "1rem" }}>{message}</div>}
-          {error && <div style={{ color: "red", marginBottom: "1rem" }}>{error}</div>}
+          {message && (
+            <div style={{ color: "green", marginBottom: "1rem" }}>
+              {message}
+            </div>
+          )}
 
-          {/* Button */}
-          <button className="button">
-            Register
-          </button>
+          {error && (
+            <div style={{ color: "red", marginBottom: "1rem" }}>
+              {error}
+            </div>
+          )}
+
+          <button className="button">Register</button>
         </form>
 
-        {/* Footer */}
         <p className="text-center mt-3 mb-0">
           Have an account?{" "}
           <a href="/login" className="link-color">
