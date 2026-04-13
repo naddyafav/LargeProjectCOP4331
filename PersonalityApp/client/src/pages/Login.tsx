@@ -40,7 +40,7 @@ export default function Login() {
 
       {/* PAGE TITLE */}
       <div style={{ textAlign: "center", marginBottom: "20px", zIndex: "1" }}>
-        <h1 className="page-title">Personality Connect!</h1>
+        <h1 className="page-title">Cloud Connect!</h1>
       </div>
 
       <div className="card">

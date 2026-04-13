@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import Clouds from "../components/Clouds";
 
-const API = "http://localhost:5050";
+const API = "http://104.236.41.135:5050";
 
 type Option = {
   label: string;
@@ -35,6 +36,7 @@ export default function Quiz() {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError]           = useState("");
   const navigate = useNavigate();
+  const goToHome = () => { navigate("/home"); };
 
   // ── Fetch questions on mount ──────────────────────────────────────────────
   useEffect(() => {
@@ -95,9 +97,6 @@ export default function Quiz() {
 
       if (res.ok) {
         // Save the full result profile to localStorage so Home can read it
-        const user = JSON.parse(localStorage.getItem("user") || "{}");
-        user.personalityType = data.result.name;
-        localStorage.setItem("user", JSON.stringify(user));
         localStorage.setItem("quizResult", JSON.stringify(data.result));
         navigate("/home");
       } else {
@@ -123,6 +122,9 @@ export default function Quiz() {
     return (
       <div style={containerStyle}>
         <p style={{ color: "red" }}>{error}</p>
+        <button onClick={goToHome} className="button" style={{ width: "100px" }}>
+            Home
+          </button>
       </div>
     );
   }
@@ -140,20 +142,23 @@ export default function Quiz() {
 
   return (
     <div style={containerStyle}>
+
+      <Clouds/>
+
       {/* Progress bar */}
-      <div style={{ width: "100%", maxWidth: "560px", marginBottom: "12px" }}>
-        <div style={{ height: "6px", backgroundColor: "rgba(255,255,255,0.3)", borderRadius: "3px" }}>
+      <div style={{ width: "100%", maxWidth: "560px", marginBottom: "12px", zIndex: "1" }}>
+        <div style={{ height: "6px", backgroundColor: "rgba(124, 124, 124, 0.4)", borderRadius: "3px" }}>
           <div
             style={{
               height: "6px",
               width: `${progress}%`,
-              backgroundColor: "#fff",
+              backgroundColor: "#555",
               borderRadius: "3px",
               transition: "width 0.3s ease",
             }}
           />
         </div>
-        <p style={{ color: "rgba(255,255,255,0.8)", fontSize: "0.8rem", marginTop: "4px", textAlign: "right" }}>
+        <p style={{ color: "rgba(124, 124, 124, 0.8)", fontSize: "0.8rem", marginTop: "4px", textAlign: "right" }}>
           {current + 1} / {questions.length}
         </p>
       </div>
@@ -208,6 +213,7 @@ const cardStyle: React.CSSProperties = {
   border: "6px solid #7aa2e3",
   boxShadow: "0 4px 15px rgba(0,0,0,0.1)",
   padding: "32px",
+  zIndex: "1"
 };
 
 const optionButtonStyle: React.CSSProperties = {
