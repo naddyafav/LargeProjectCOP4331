@@ -62,7 +62,7 @@ router.post("/", async (req, res) => {
     await newUser.save();
     console.log("User saved to database:", newUser.email);
 
-    const verificationLink = `${req.protocol}://${req.get("host")}/register/verify/${verificationToken}`;
+    const verificationLink = `http://group9.online/register/verify/${verificationToken}`;
 
     const msg = {
       to: normalizedEmail,
@@ -83,9 +83,7 @@ router.post("/", async (req, res) => {
       })
       .catch((mailError) => {
         console.error("SendGrid email failed, but user is already registered.");
-        console.error(
-          mailError?.response?.body || mailError.message || mailError
-        );
+        console.error(mailError?.response?.body || mailError.message || mailError);
       });
 
     return res.status(201).json({
