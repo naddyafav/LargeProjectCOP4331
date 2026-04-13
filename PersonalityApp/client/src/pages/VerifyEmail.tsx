@@ -12,7 +12,7 @@ export default function VerifyEmail() {
     const verify = async () => {
       try {
         const res = await fetch(
-          `http://104.236.41.135/api/verify/${token}`
+          `http://104.236.41.135/register/verify/${token}`
         );
 
         const data = await res.json();
