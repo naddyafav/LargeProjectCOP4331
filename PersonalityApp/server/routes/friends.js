@@ -152,4 +152,38 @@ router.get("/search", verifyToken, async(req, res) => {
       error: "Server error. Please try again later." });
   }
 });
+
+// GET /friends/recommended
+router.get("/recommended", verifyToken, async (req, res) => {
+  try {
+    const currentUserId = req.user.userId;
+    const currentUser = await User.findById(currentUserId);
+
+    if (!currentUser) {
+      return res.status(404).json({
+        error: "User not found."
+      });
+    }
+
+    if (!currentUser.personalityType) {
+      return res.status(200).json({
+        message: "Take the quiz to find users with a similar personality!",
+        results: []
+      });
+    }
+
+    const recommended = await User.find({
+      _id: { $nin: currentUser.friends.concat([currentUser._id]) },
+      personalityType: currentUser.personalityType
+    }).select("username firstName lastName personalityType").limit(10);
+
+    return res.status(200).json({
+      results: recommended
+    });
+
+  } catch (error) {
+    console.error("Recommended friends error:", error);
+    return res.status(500).json({ error: "Server error. Please try again later." });
+  }
+});
 export default router;
