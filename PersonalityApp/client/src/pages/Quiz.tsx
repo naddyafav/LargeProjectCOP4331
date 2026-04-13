@@ -97,9 +97,6 @@ export default function Quiz() {
 
       if (res.ok) {
         // Save the full result profile to localStorage so Home can read it
-        //const user = JSON.parse(localStorage.getItem("user") || "{}");
-        //user.personalityType = data.result.name;
-        //localStorage.setItem("user", JSON.stringify(user));
         localStorage.setItem("quizResult", JSON.stringify(data.result));
         navigate("/home");
       } else {

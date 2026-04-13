@@ -4,6 +4,7 @@ import Registration from "./pages/Registration";
 import Home from "./pages/Home";
 import Quiz from "./pages/Quiz";
 import Friends from "./pages/Friends";
+import VerifyEmail from "./pages/VerifyEmail";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route path="/home" element={<Home />} />
         <Route path="/quiz" element={<Quiz />} />
         <Route path="/friends" element={<Friends />} />
+        <Route path="/register/verigy/:token" element={<VerifyEmail />} />
       </Routes>
     </BrowserRouter>
   );

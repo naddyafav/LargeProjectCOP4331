@@ -145,6 +145,12 @@ router.get("/verify/:token", async (req, res) => {
       });
     }
 
+    if (user.isVerified) {
+      return res.status(200).json({
+        message: "User already verified."
+      });
+    }
+
     user.isVerified = true;
     user.verificationToken = null;
 
