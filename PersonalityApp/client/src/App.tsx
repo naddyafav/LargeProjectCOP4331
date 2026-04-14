@@ -5,6 +5,8 @@ import Home from "./pages/Home";
 import Quiz from "./pages/Quiz";
 import Friends from "./pages/Friends";
 import VerifyEmail from "./pages/VerifyEmail";
+import ResetPasswordEmail from "./pages/ResetPasswordEmail";
+import ResetPassword from "./pages/ResetPassword";
 
 function App() {
   return (
@@ -16,6 +18,8 @@ function App() {
         <Route path="/home" element={<Home />} />
         <Route path="/quiz" element={<Quiz />} />
         <Route path="/friends" element={<Friends />} />
+        <Route path="/password/reset/email" element={<ResetPasswordEmail />} />
+        <Route path="/password/reset/:token" element={<ResetPassword />} />
 
         {/* ✅ 修复拼写：verify */}
         <Route path="/register/verify/:token" element={<VerifyEmail />} />
