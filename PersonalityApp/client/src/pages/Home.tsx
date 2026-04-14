@@ -70,8 +70,21 @@ export default function Home() {
       <Clouds />
 
       {/* PAGE TITLE */}
-      <div style={{ textAlign: "center", marginBottom: "20px", zIndex: "1" }}>
-        <h1 className="page-title">Welcome, {userData?.firstName}</h1>
+      <div style={{ textAlign: "center", marginBottom: "20px", zIndex: 1 }}>
+        <h1
+          className="page-title"
+          style={{
+            display: "inline-block",
+            backgroundColor: "#f8f9fa",
+            border: "6px solid #7aa2e3",
+            borderRadius: "50px",
+            padding: "10px 32px",
+            boxShadow: "0 4px 15px rgba(0,0,0,0.1)",
+            margin: 0,
+          }}
+        >
+          Welcome, {userData?.firstName}
+        </h1>
       </div>
 
       <div className="card-row">
@@ -125,7 +138,9 @@ export default function Home() {
         {/* Friends Card: Right */}
         <div className="card">
           <div>
-            <strong style={{color: "#7aa2e3"}}>Friends:</strong>
+            <div className="text-center mb-4">
+              <h2 className="page-header">Current Friends</h2>
+            </div>
 
             {userData?.friends.length ? (
               <ul className="friends-list">

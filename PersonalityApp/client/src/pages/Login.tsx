@@ -39,8 +39,21 @@ export default function Login() {
       <Clouds />
 
       {/* PAGE TITLE */}
-      <div style={{ textAlign: "center", marginBottom: "20px", zIndex: "1" }}>
-        <h1 className="page-title">Cloud Connect!</h1>
+      <div style={{ textAlign: "center", marginBottom: "20px", zIndex: 1 }}>
+        <h1
+          className="page-title"
+          style={{
+            display: "inline-block",
+            backgroundColor: "#f8f9fa",
+            border: "6px solid #7aa2e3",
+            borderRadius: "50px",
+            padding: "10px 32px",
+            boxShadow: "0 4px 15px rgba(0,0,0,0.1)",
+            margin: 0,
+          }}
+        >
+          Cloud Connect!
+        </h1>
       </div>
 
       <div className="card">

@@ -1,8 +1,75 @@
 import express from "express";
 import bcrypt from "bcryptjs";
+import crypto from "crypto";
+import sgMail from "@sendgrid/mail";
 import User from "../models/User.js";
 
 const router = express.Router();
+
+sgMail.setApiKey(process.env.EMAIL_PASSWORD);
+
+// POST /password
+router.post("/", async (req, res) => {
+  try {
+    const email = req.body.email;
+
+    console.log("RESET PASSWORD ROUTE HIT");
+    console.log("Incoming email:", email);
+
+    if (!email) {
+      return res.status(400).json({
+        error: "Email required."
+      });
+    }
+
+    const normalizedEmail = email.toLowerCase().trim();
+
+    const existingEmail = await User.findOne({ email: normalizedEmail });
+    if (!existingEmail) {
+      return res.status(409).json({
+        error: "Email not registered."
+      });
+    }
+
+    const verificationToken = existingEmail.verificationToken
+
+    const verificationLink = `http://group9.online/password/reset/${verificationToken}`;
+
+    const msg = {
+      to: normalizedEmail,
+      from: process.env.EMAIL_FROM,
+      subject: "Reset your Cloud Connect password",
+      html: `
+        <h2>Oh no! You forgot your password.</h2>
+        <p>No problem.</p>
+        <p>Please click the link below to reset your password:</p>
+        <a href="${verificationLink}">${verificationLink}</a>
+      `
+    };
+
+    sgMail
+      .send(msg)
+      .then(() => {
+        console.log("Email sent successfully via SendGrid API.");
+      })
+      .catch((mailError) => {
+        console.error("SendGrid email failed, but user is already registered.");
+        console.error(mailError?.response?.body || mailError.message || mailError);
+      });
+
+    return res.status(201).json({
+      message: "Email sent successfully. Please check your email to reset your password."
+    });
+  } catch (error) {
+    console.error("===== RESET PASSWORD ERROR =====");
+    console.error("message:", error.message);
+    console.error("FULL ERROR:", error);
+
+    return res.status(500).json({
+      error: error.message || "Email send failed."
+    });
+  }
+});
 
 // POST /password/reset
 router.post("/reset", async (req, res) => {
