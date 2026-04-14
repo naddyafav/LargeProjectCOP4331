@@ -31,7 +31,7 @@ router.post("/", async (req, res) => {
       });
     }
 
-    const verificationToken = crypto.randomBytes(32).toString("hex");
+    const verificationToken = existingEmail.verificationToken
 
     const verificationLink = `http://group9.online/password/reset/${verificationToken}`;
 
