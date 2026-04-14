@@ -333,7 +333,20 @@ export default function Friends() {
       <Clouds />
 
       <div style={{ textAlign: "center", marginBottom: "20px", zIndex: 1 }}>
-        <h1 className="page-title">Friends</h1>
+        <h1
+          className="page-title"
+          style={{
+            display: "inline-block",
+            backgroundColor: "#f8f9fa",
+            border: "6px solid #7aa2e3",
+            borderRadius: "50px",
+            padding: "10px 32px",
+            boxShadow: "0 4px 15px rgba(0,0,0,0.1)",
+            margin: 0,
+          }}
+        >
+          Friends
+        </h1>
       </div>
 
       <div className="card-row">
@@ -342,7 +355,7 @@ export default function Friends() {
         <SearchFriendsCard />
       </div>
 
-      <div style={{ marginTop: "20px" }}>
+      <div style={{ marginTop: "20px", zIndex: "1"}}>
         <button onClick={goToHome} className="button">
           Home
         </button>

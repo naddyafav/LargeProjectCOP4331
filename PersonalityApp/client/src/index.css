@@ -62,12 +62,13 @@ html, body {
 
 .page-title {
   color: #7aa2e3;
-  font-weight: 1200;
+  font-weight: 800;
   z-index: 1;
+  font-size: 2.5rem;
 }
 
 .page-text {
-  color: #7aa2e3;
+  color: #444;
   font-weight: 400;
 }
 
@@ -124,7 +125,7 @@ html, body {
   padding: 10px 12px;
   border-bottom: 1px solid #7e7e7e;
 
-  color: #7aa2e3;
+  color: #444;
 }
 
 .friend-item:last-child {
