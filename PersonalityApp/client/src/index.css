@@ -244,3 +244,44 @@ html, body {
   min-width: 40px;
   text-align: center;
 }
+
+.button-action {
+  width: 80px;
+  padding: 6px 0;
+  font-size: 0.85rem;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.search-input {
+  width: 100%;
+  padding: 10px 14px;
+  border: 3px solid #7aa2e3;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  background-color: #f8f9fa;
+  color: #444;
+  outline: none;
+  box-sizing: border-box;
+  transition: border-color 0.2s ease;
+}
+
+.search-input:focus {
+  border-color: #6a92d6;
+}
+
+.search-input::placeholder {
+  color: #aac0e0;
+}
+
+.search-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.search-col .button {
+  width: 100%;
+}

@@ -161,7 +161,7 @@ router.get("/search", verifyToken, async(req, res) => {
         { lastName: { $regex: safeQuery, $options: "i" } }
       ]
     })
-      .select("username firstName lastName").limit(15)
+      .select("username firstName lastName")
       .skip(skip)
       .limit(limit);
 
@@ -205,7 +205,7 @@ router.get("/recommended", verifyToken, async (req, res) => {
       _id: { $nin: currentUser.friends.concat([currentUser._id]) },
       personalityType: currentUser.personalityType
     })
-      .select("username firstName lastName personalityType").limit(10)
+      .select("username firstName lastName personalityType")
       .skip(skip)
       .limit(limit);
 
