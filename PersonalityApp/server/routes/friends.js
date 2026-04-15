@@ -96,7 +96,6 @@ router.post("/add", verifyToken, async (req, res) => {
   }
 });
 
-
 //GET /friends/list
 router.get("/list", verifyToken, async (req, res) => {
   try {
@@ -142,9 +141,8 @@ router.get("/search", verifyToken, async(req, res) => {
     const currentUserId = req.user.userId;
     const currentUser = await User.findById(currentUserId);
 
-    const total   = await User.countDocuments({
-      _id: { $nin: currentUser.friends.concat([currentUser._id])
-      },
+    const total = await User.countDocuments({
+      _id: { $nin: currentUser.friends.concat([currentUser._id]) },
       $or: [
         { username: { $regex: safeQuery, $options: "i" } },
         { firstName: { $regex: safeQuery, $options: "i" } },
@@ -153,8 +151,7 @@ router.get("/search", verifyToken, async(req, res) => {
     });
 
     const results = await User.find({
-      _id: { $nin: currentUser.friends.concat([currentUser._id])
-      },
+      _id: { $nin: currentUser.friends.concat([currentUser._id]) },
       $or: [
         { username: { $regex: safeQuery, $options: "i" } },
         { firstName: { $regex: safeQuery, $options: "i" } },
@@ -218,4 +215,70 @@ router.get("/recommended", verifyToken, async (req, res) => {
     return res.status(500).json({ error: "Server error. Please try again later." });
   }
 });
+
+// DELETE /friends/remove
+router.delete("/remove", verifyToken, async (req, res) => {
+  try {
+    const currentUserId = req.user.userId;
+    const friendUsername = req.body.username;
+
+    if (!friendUsername) {
+      return res.status(400).json({
+        error: "Friend username is required."
+      });
+    }
+
+    const currentUser = await User.findById(currentUserId);
+    const friendUser = await User.findOne({ username: friendUsername });
+
+    if (!currentUser) {
+      return res.status(404).json({
+        error: "Current user not found."
+      });
+    }
+
+    if (!friendUser) {
+      return res.status(404).json({
+        error: "User not found."
+      });
+    }
+
+    const isFriend = currentUser.friends.some(
+      (friendId) => friendId.toString() === friendUser._id.toString()
+    );
+
+    if (!isFriend) {
+      return res.status(400).json({
+        error: "This user is not in your friends list."
+      });
+    }
+
+    currentUser.friends = currentUser.friends.filter(
+      (friendId) => friendId.toString() !== friendUser._id.toString()
+    );
+    friendUser.friends = friendUser.friends.filter(
+      (friendId) => friendId.toString() !== currentUser._id.toString()
+    );
+
+    await currentUser.save();
+    await friendUser.save();
+
+    return res.status(200).json({
+      message: "Friend removed successfully.",
+      friend: {
+        id: friendUser._id,
+        username: friendUser.username,
+        firstName: friendUser.firstName,
+        lastName: friendUser.lastName,
+        email: friendUser.email
+      }
+    });
+  } catch (error) {
+    console.error("Remove friend error:", error);
+    return res.status(500).json({
+      error: "Server error. Please try again later."
+    });
+  }
+});
+
 export default router;
