@@ -96,8 +96,6 @@ export default function Quiz() {
       const data = await res.json();
 
       if (res.ok) {
-        // Save the full result profile to localStorage so Home can read it
-        localStorage.setItem("quizResult", JSON.stringify(data.result));
         navigate("/home");
       } else {
         setError(data.error || "Submission failed.");

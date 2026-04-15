@@ -100,7 +100,7 @@ router.post("/add", verifyToken, async (req, res) => {
 router.get("/list", verifyToken, async (req, res) => {
   try {
     const page  = Math.max(1, parseInt(req.query.page)  || 1);
-    const limit = Math.max(1, parseInt(req.query.limit) || 10);
+    const limit = Math.max(1, parseInt(req.query.limit) || 5);
     const skip  = (page - 1) * limit;
     const currentUserId = req.user.userId;
     const currentUser = await User.findById(currentUserId).populate("friends", "username firstName lastName");
@@ -136,7 +136,7 @@ router.get("/search", verifyToken, async(req, res) => {
     const safeQuery = escapeRegex(query);
 
     const page  = Math.max(1, parseInt(req.query.page)  || 1);
-    const limit = Math.max(1, parseInt(req.query.limit) || 10);
+    const limit = Math.max(1, parseInt(req.query.limit) || 5);
     const skip  = (page - 1) * limit;
     const currentUserId = req.user.userId;
     const currentUser = await User.findById(currentUserId);
@@ -175,7 +175,7 @@ router.get("/search", verifyToken, async(req, res) => {
 router.get("/recommended", verifyToken, async (req, res) => {
   try {
     const page  = Math.max(1, parseInt(req.query.page)  || 1);
-    const limit = Math.max(1, parseInt(req.query.limit) || 10);
+    const limit = Math.max(1, parseInt(req.query.limit) || 5);
     const skip = (page - 1) * limit;
     const currentUserId = req.user.userId;
     const currentUser = await User.findById(currentUserId);

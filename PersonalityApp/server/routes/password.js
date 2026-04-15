@@ -24,14 +24,18 @@ router.post("/", async (req, res) => {
 
     const normalizedEmail = email.toLowerCase().trim();
 
-    const existingEmail = await User.findOne({ email: normalizedEmail });
-    if (!existingEmail) {
+    const user = await User.findOne({ email: normalizedEmail });
+    if (!user) {
       return res.status(409).json({
         error: "Email not registered."
       });
     }
 
-    const verificationToken = existingEmail.verificationToken
+    const verificationToken = crypto.randomBytes(32).toString("hex");
+
+    user.verificationToken = verificationToken;
+
+    await user.save();
 
     const verificationLink = `http://group9.online/password/reset/${verificationToken}`;
 
