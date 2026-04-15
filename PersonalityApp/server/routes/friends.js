@@ -96,10 +96,12 @@ router.post("/add", verifyToken, async (req, res) => {
   }
 });
 
-
 //GET /friends/list
 router.get("/list", verifyToken, async (req, res) => {
   try {
+    const page  = Math.max(1, parseInt(req.query.page)  || 1);
+    const limit = Math.max(1, parseInt(req.query.limit) || 10);
+    const skip  = (page - 1) * limit;
     const currentUserId = req.user.userId;
     const currentUser = await User.findById(currentUserId).populate("friends", "username firstName lastName");
 
@@ -108,8 +110,10 @@ router.get("/list", verifyToken, async (req, res) => {
         error: "User not found" });
     }
 
-    return res.status(200).json({ 
-      friends: currentUser.friends});
+    const total   = currentUser.friends.length;
+    const friends = currentUser.friends.slice(skip, skip + limit);
+
+    return res.status(200).json({friends, total});
 
   } catch(error) {
     console.error("List friends error:", error);
@@ -131,25 +135,84 @@ router.get("/search", verifyToken, async(req, res) => {
     const escapeRegex = (string) => string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
     const safeQuery = escapeRegex(query);
 
+    const page  = Math.max(1, parseInt(req.query.page)  || 1);
+    const limit = Math.max(1, parseInt(req.query.limit) || 10);
+    const skip  = (page - 1) * limit;
     const currentUserId = req.user.userId;
     const currentUser = await User.findById(currentUserId);
 
-    const results = await User.find({
-      _id: { $nin: currentUser.friends.concat([currentUser._id])
-      },
+    const total = await User.countDocuments({
+      _id: { $nin: currentUser.friends.concat([currentUser._id]) },
       $or: [
         { username: { $regex: safeQuery, $options: "i" } },
         { firstName: { $regex: safeQuery, $options: "i" } },
         { lastName: { $regex: safeQuery, $options: "i" } }
       ]
-    }).select("username firstName lastName").limit(15);
+    });
 
-    return res.status(200).json({ results });
+    const results = await User.find({
+      _id: { $nin: currentUser.friends.concat([currentUser._id]) },
+      $or: [
+        { username: { $regex: safeQuery, $options: "i" } },
+        { firstName: { $regex: safeQuery, $options: "i" } },
+        { lastName: { $regex: safeQuery, $options: "i" } }
+      ]
+    })
+      .select("username firstName lastName")
+      .skip(skip)
+      .limit(limit);
+
+    return res.status(200).json({ results, total });
 
   } catch(error) {
     console.error("Search friends error:", error);
     return res.status(500).json({ 
       error: "Server error. Please try again later." });
+  }
+});
+
+// GET /friends/recommended
+router.get("/recommended", verifyToken, async (req, res) => {
+  try {
+    const page  = Math.max(1, parseInt(req.query.page)  || 1);
+    const limit = Math.max(1, parseInt(req.query.limit) || 10);
+    const skip = (page - 1) * limit;
+    const currentUserId = req.user.userId;
+    const currentUser = await User.findById(currentUserId);
+
+    if (!currentUser) {
+      return res.status(404).json({
+        error: "User not found."
+      });
+    }
+
+    if (!currentUser.personalityType) {
+      return res.status(200).json({
+        message: "Take the quiz to find users with a similar personality!",
+        results: []
+      });
+    }
+
+    const total = await User.countDocuments({
+      _id: { $nin: currentUser.friends.concat([currentUser._id]) },
+      personalityType: currentUser.personalityType
+    });
+    
+    const recommended = await User.find({
+      _id: { $nin: currentUser.friends.concat([currentUser._id]) },
+      personalityType: currentUser.personalityType
+    })
+      .select("username firstName lastName personalityType")
+      .skip(skip)
+      .limit(limit);
+
+    return res.status(200).json({
+      results: recommended, total
+    });
+
+  } catch (error) {
+    console.error("Recommended friends error:", error);
+    return res.status(500).json({ error: "Server error. Please try again later." });
   }
 });
 
