@@ -51,13 +51,12 @@ class _LoginPageState extends State<LoginPage> {
 
       if (response.statusCode == 200) {
         final String token = data['token'];
-        final Map user = data['user'];
 
         if (!mounted) return;
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (_) => HomePage(user: user, token: token),
+            builder: (_) => HomePage(token: token),
           ),
         );
       } else {

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'login_page.dart';
-import 'clouds_widget.dart';
 
 const Color _skyBlue = Color(0xFFACDFFA);
 const Color _accentBlue = Color(0xFF7AA2E3);
@@ -94,10 +93,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: _skyBlue,
-      body: Stack(
-        children: [
-          const Positioned.fill(child: CloudsBackground()),
-          SafeArea(
+      body: SafeArea(
             child: Center(
               child: SingleChildScrollView(
                 padding: const EdgeInsets.all(24),
@@ -133,8 +129,6 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
                 ),
               ),
             ),
-          ),
-        ],
       ),
     );
   }

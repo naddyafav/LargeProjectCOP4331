@@ -13,10 +13,9 @@ const Color _accentBlue = Color(0xFF7AA2E3);
 const Color _cardBg = Color(0xFFF8F9FA);
 
 class HomePage extends StatefulWidget {
-  final Map user;
   final String token;
 
-  const HomePage({super.key, required this.user, required this.token});
+  const HomePage({super.key, required this.token});
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -31,7 +30,6 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    userData = widget.user;
     fetchUser();
   }
 

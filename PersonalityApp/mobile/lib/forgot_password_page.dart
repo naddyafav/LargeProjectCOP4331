@@ -42,7 +42,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
       );
       final data = jsonDecode(res.body);
 
-      if (res.statusCode == 200) {
+      if (res.statusCode == 201) {
         setState(() {
           message = data['message'] ??
               'Email sent. Check your inbox to reset your password.';
