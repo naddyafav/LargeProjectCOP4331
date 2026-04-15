@@ -1,0 +1,26 @@
+# Flutter / Dart
+.dart_tool/
+.packages
+.pub/
+build/
+
+# Android / IntelliJ
+android/.gradle/
+android/app/debug
+android/app/profile
+android/app/release
+.idea/
+*.iml
+
+# iOS
+ios/Pods/
+ios/.symlinks/
+ios/Flutter/Flutter.framework
+ios/Flutter/Flutter.podspec
+
+# macOS / Windows junk
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
