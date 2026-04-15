@@ -98,6 +98,13 @@ export default function Login() {
             Register Now!
           </a>
         </p>
+
+        <p className="text-center mt-3 mb-0">
+          Forgot your password?{" "}
+          <a href="/password/reset/email" className="link-color">
+            Reset Now!
+          </a>
+        </p>
       </div>
     </div>
   );
