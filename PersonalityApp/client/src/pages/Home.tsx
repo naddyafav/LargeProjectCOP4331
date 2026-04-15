@@ -180,7 +180,7 @@ export default function Home() {
                 ))}
               </ul>
             ) : (
-              <p className="page-header">No Friends Yet.</p>
+              <p className="card-status">No Friends Yet.</p>
             )}
           </div>
 

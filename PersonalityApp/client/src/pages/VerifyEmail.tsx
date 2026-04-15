@@ -39,22 +39,30 @@ export default function VerifyEmail() {
 
   return (
     <div className="page-center page-sky">
-      {status === "verifying" && <p>Verifying your email...</p>}
 
-      {status === "success" && (
-        <>
-          <h2>Email Verified!</h2>
-          <p>{message}</p>
-          <p>Redirecting to login...</p>
-        </>
-      )}
+      <div className="card" style={{ textAlign: "center" }}>
+        {status === "verifying" && (
+          <>
+            <h2 className="page-header">Verifying your email...</h2>
+            <p className="page-text">Please wait a moment.</p>
+          </>
+        )}
 
-      {status === "error" && (
-        <>
-          <h2>Verification Failed</h2>
-          <p>{message}</p>
-        </>
-      )}
+        {status === "success" && (
+          <>
+            <h2 className="page-header">Email Verified!</h2>
+            <p className="page-text">{message}</p>
+            <p className="card-status">Redirecting to login...</p>
+          </>
+        )}
+
+        {status === "error" && (
+          <>
+            <h2 className="page-header">Verification Failed</h2>
+            <p className="card-status card-error">{message}</p>
+          </>
+        )}
+      </div>
     </div>
   );
 }

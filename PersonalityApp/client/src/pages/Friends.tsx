@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import Clouds from "../components/Clouds";
 
 const API_BASE = "http://104.236.41.135:5050/friends";
-const PAGE_SIZE = 10;
+const PAGE_SIZE = 5;
 
 function getToken(): string | null {
   return localStorage.getItem("token");
