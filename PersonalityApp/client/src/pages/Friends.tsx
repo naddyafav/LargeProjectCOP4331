@@ -54,9 +54,30 @@ interface CurrentFriendsCardProps {
   error: string | null;
   page: number;
   onPageChange: (p: number) => void;
+  onRemove: (friend: Friend) => void;
 }
 
-function CurrentFriendsCard({ friends, total, loading, error, page, onPageChange }: CurrentFriendsCardProps) {
+function CurrentFriendsCard({ friends, total, loading, error, page, onPageChange, onRemove }: CurrentFriendsCardProps) {
+  const [removing, setRemoving] = useState<string | null>(null);
+
+  async function handleRemove(friend: Friend) {
+    setRemoving(friend.username);
+    try {
+      const res = await fetch(`${API_BASE}/remove`, {
+        method: "DELETE",
+        headers: authHeaders(),
+        body: JSON.stringify({ username: friend.username }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Could not remove friend.");
+      onRemove(friend);
+    } catch (err: any) {
+      alert(err.message);
+    } finally {
+      setRemoving(null);
+    }
+  }
+
   return (
     <div className="card">
       <h2 className="page-header" style={{ textAlign: "center" }}>Current Friends</h2>
@@ -79,9 +100,10 @@ function CurrentFriendsCard({ friends, total, loading, error, page, onPageChange
                 </span>
                 <button
                   className="button button-danger button-action"
-                  onClick={() => alert(`Remove friend: ${f.username} (endpoint pending)`)}
+                  disabled={removing === f.username}
+                  onClick={() => handleRemove(f)}
                 >
-                  Remove
+                  {removing === f.username ? "Removing..." : "Remove"}
                 </button>
               </li>
             ))}
@@ -338,6 +360,11 @@ export default function Friends() {
     setFriendsTotal((prev) => prev + 1);
   }
 
+  function handleFriendRemoved(removedFriend: Friend) {
+    setFriends((prev) => prev.filter((f) => f._id !== removedFriend._id));
+    setFriendsTotal((prev) => prev - 1);
+  }
+
   return (
     <div className="page-center page-sky" style={{ flexDirection: "column" }}>
       <Clouds />
@@ -367,6 +394,7 @@ export default function Friends() {
           error={friendsError}
           page={friendsPage}
           onPageChange={setFriendsPage}
+          onRemove={handleFriendRemoved}
         />
         <RecommendedFriendsCard onAdd={handleFriendAdded} />
         <SearchFriendsCard onAdd={handleFriendAdded} />
