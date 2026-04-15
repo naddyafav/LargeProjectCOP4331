@@ -1,19 +1,12 @@
 import express from "express";
 import bcrypt from "bcryptjs";
 import crypto from "crypto";
-import nodemailer from "nodemailer";
+import sgMail from "@sendgrid/mail";
 import User from "../models/User.js";
 
 const router = express.Router();
 
-// Create email transporter
-const transporter = nodemailer.createTransport({
-  service: "gmail",
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS
-  }
-});
+sgMail.setApiKey(process.env.EMAIL_PASSWORD);
 
 // POST /register
 router.post("/", async (req, res) => {
@@ -24,20 +17,27 @@ router.post("/", async (req, res) => {
     const username = req.body.username;
     const password = req.body.password;
 
+    console.log("REGISTER ROUTE HIT");
+    console.log("Incoming email:", email);
+    console.log("Incoming username:", username);
+
     if (!firstName || !lastName || !email || !username || !password) {
       return res.status(400).json({
         error: "All fields are required."
       });
     }
 
-    const existingUsername = await User.findOne({ username: username });
+    const normalizedEmail = email.toLowerCase().trim();
+    const trimmedUsername = username.trim();
+
+    const existingUsername = await User.findOne({ username: trimmedUsername });
     if (existingUsername) {
       return res.status(409).json({
         error: "Username already taken."
       });
     }
 
-    const existingEmail = await User.findOne({ email: email.toLowerCase() });
+    const existingEmail = await User.findOne({ email: normalizedEmail });
     if (existingEmail) {
       return res.status(409).json({
         error: "Email already in use."
@@ -46,27 +46,27 @@ router.post("/", async (req, res) => {
 
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
-
     const verificationToken = crypto.randomBytes(32).toString("hex");
 
     const newUser = new User({
-      firstName: firstName,
-      lastName: lastName,
-      email: email.toLowerCase(),
-      username: username,
+      firstName: firstName.trim(),
+      lastName: lastName.trim(),
+      email: normalizedEmail,
+      username: trimmedUsername,
       password: hashedPassword,
       isVerified: false,
-      verificationToken: verificationToken,
+      verificationToken,
       friends: []
     });
 
     await newUser.save();
+    console.log("User saved to database:", newUser.email);
 
-    const verificationLink = `${process.env.BASE_URL}/register/verify/${verificationToken}`;
+    const verificationLink = `http://group9.online/register/verify/${verificationToken}`;
 
-    await transporter.sendMail({
-      from: process.env.EMAIL_USER,
-      to: email,
+    const msg = {
+      to: normalizedEmail,
+      from: process.env.EMAIL_FROM,
       subject: "Verify your Quiz account",
       html: `
         <h2>Welcome to the Quiz App</h2>
@@ -74,15 +74,28 @@ router.post("/", async (req, res) => {
         <p>Please click the link below to verify your email:</p>
         <a href="${verificationLink}">${verificationLink}</a>
       `
-    });
+    };
+
+    sgMail
+      .send(msg)
+      .then(() => {
+        console.log("Email sent successfully via SendGrid API.");
+      })
+      .catch((mailError) => {
+        console.error("SendGrid email failed, but user is already registered.");
+        console.error(mailError?.response?.body || mailError.message || mailError);
+      });
 
     return res.status(201).json({
       message: "User registered successfully. Please check your email to verify your account."
     });
   } catch (error) {
-    console.error("Registration error:", error);
+    console.error("===== REGISTRATION ERROR =====");
+    console.error("message:", error.message);
+    console.error("FULL ERROR:", error);
+
     return res.status(500).json({
-      error: "Server error. Please try again later."
+      error: error.message || "Registration failed."
     });
   }
 });
@@ -91,6 +104,8 @@ router.post("/", async (req, res) => {
 router.get("/verify/:token", async (req, res) => {
   try {
     const token = req.params.token;
+    console.log("VERIFY ROUTE HIT");
+    console.log("Verification token:", token);
 
     const user = await User.findOne({ verificationToken: token });
 
@@ -100,10 +115,18 @@ router.get("/verify/:token", async (req, res) => {
       });
     }
 
+    if (user.isVerified) {
+      return res.status(200).json({
+        message: "User already verified."
+      });
+    }
+
     user.isVerified = true;
     user.verificationToken = null;
 
     await user.save();
+
+    console.log("User verified successfully:", user.email);
 
     return res.status(200).json({
       message: "Email verified successfully. You can now log in."
