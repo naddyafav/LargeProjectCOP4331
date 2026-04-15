@@ -20,3 +20,8 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+
+  assets:
+    - assets/cloud1.png
+    - assets/cloud2.png
+    - assets/cloud3.png
