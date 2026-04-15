@@ -1,35 +1,44 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Clouds from "../components/Clouds";
-import { getProfileByName, CloudProfile } from "../data/cloudProfiles";
+import { getProfileByName } from "../data/cloudProfiles";
+import type { CloudProfile } from "../data/cloudProfiles";
+
+type Friend = {
+  _id: string;
+  username: string;
+};
+
+type User = {
+  firstName: string;
+  lastName: string;
+  username: string;
+  email: string;
+  friends: Friend[];
+  personalityType?: string;
+};
 
 export default function Home() {
-
-  type User = {
-    firstName: string;
-    lastName: string;
-    username: string;
-    email: string;
-    friends: any[];
-  };
-
   const [userData, setUserData] = useState<User | null>(null);
   const [result, setResult] = useState<CloudProfile | null>(null);
   const [error, setError] = useState("");
   const navigate = useNavigate();
-  const goToQuiz = () => { navigate("/quiz"); };
-  const goToFriends = () => { navigate("/friends"); };
+
+  const goToQuiz = () => {
+    navigate("/quiz");
+  };
+
+  const goToFriends = () => {
+    navigate("/friends");
+  };
+
   const handleLogout = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("quizResult");
     navigate("/login");
   };
 
   useEffect(() => {
-    const stored = localStorage.getItem("quizResult");
-    if (stored) {
-      setResult(JSON.parse(stored));
-    }
-    
     const fetchUser = async () => {
       try {
         const token = localStorage.getItem("token");
@@ -46,9 +55,12 @@ export default function Home() {
 
         if (response.ok) {
           setUserData(data);
+
           if (data.personalityType) {
             const profile = getProfileByName(data.personalityType);
             setResult(profile);
+          } else {
+            setResult(null);
           }
         } else {
           setError(data.error || "Failed to fetch user");
@@ -66,7 +78,6 @@ export default function Home() {
     <div className="page-center page-sky" style={{ flexDirection: "column" }}>
       <Clouds />
 
-      {/* PAGE TITLE */}
       <div style={{ textAlign: "center", marginBottom: "20px", zIndex: 1 }}>
         <h1
           className="page-title"
@@ -85,8 +96,6 @@ export default function Home() {
       </div>
 
       <div className="card-row">
-
-        {/* Profile Card: Left */}
         <div className="card">
           <div className="text-center mb-4">
             <h2 className="page-header">Profile</h2>
@@ -101,21 +110,41 @@ export default function Home() {
 
           {error && <p style={{ color: "red" }}>{error}</p>}
 
-          <button onClick={handleLogout} className="button">Logout</button>
+          <button onClick={handleLogout} className="button">
+            Logout
+          </button>
         </div>
 
-        {/* Personality Card: Middle */}
         {result ? (
           <div className="card-large">
             <div style={{ textAlign: "center", marginBottom: "20px" }}>
               <span style={{ fontSize: "4rem" }}>{result.emoji}</span>
-              <h1 style={{ color: "#7aa2e3", fontWeight: 700, margin: "8px 0 2px" }}>{result.name}</h1>
-              <p style={{ color: "#aaa", fontSize: "0.85rem", margin: 0 }}>{result.altitude}</p>
+              <h1
+                style={{
+                  color: "#7aa2e3",
+                  fontWeight: 700,
+                  margin: "8px 0 2px",
+                }}
+              >
+                {result.name}
+              </h1>
+              <p style={{ color: "#aaa", fontSize: "0.85rem", margin: 0 }}>
+                {result.altitude}
+              </p>
             </div>
 
-            <p style={{ color: "#444", lineHeight: 1.7, marginBottom: "20px" }}>{result.description}</p>
+            <p style={{ color: "#444", lineHeight: 1.7, marginBottom: "20px" }}>
+              {result.description}
+            </p>
 
-            <div style={{ display: "flex", gap: "8px", flexWrap: "wrap", marginBottom: "24px" }}>
+            <div
+              style={{
+                display: "flex",
+                gap: "8px",
+                flexWrap: "wrap",
+                marginBottom: "24px",
+              }}
+            >
               {result.traits.map((trait) => (
                 <span key={trait} className="trait-style">
                   {trait}
@@ -123,16 +152,19 @@ export default function Home() {
               ))}
             </div>
 
-            <button onClick={goToQuiz} className="button">Retake Quiz</button>
+            <button onClick={goToQuiz} className="button">
+              Retake Quiz
+            </button>
           </div>
         ) : (
-          <div className="card-large" style={{textAlign: "center"}}>
+          <div className="card-large" style={{ textAlign: "center" }}>
             <p className="page-header">No Quiz Results Yet.</p>
-            <button onClick={goToQuiz} className="button">Take Quiz</button>
+            <button onClick={goToQuiz} className="button">
+              Take Quiz
+            </button>
           </div>
         )}
-        
-        {/* Friends Card: Right */}
+
         <div className="card">
           <div>
             <div className="text-center mb-4">
@@ -151,7 +183,10 @@ export default function Home() {
               <p className="page-header">No Friends Yet.</p>
             )}
           </div>
-            <button onClick={goToFriends} className="button">Find Friends</button>
+
+          <button onClick={goToFriends} className="button">
+            Find Friends
+          </button>
         </div>
       </div>
     </div>
