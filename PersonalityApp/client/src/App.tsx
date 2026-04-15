@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Login from "./pages/Login";
 import Registration from "./pages/Registration";
 import Home from "./pages/Home";
@@ -8,6 +8,12 @@ import VerifyEmail from "./pages/VerifyEmail";
 import ResetPasswordEmail from "./pages/ResetPasswordEmail";
 import ResetPassword from "./pages/ResetPassword";
 
+function ProtectedRoute({ children }: { children: JSX.Element }) {
+  const token = localStorage.getItem("token");
+  if (!token) return <Navigate to="/login" replace />;
+  return children;
+}
+
 function App() {
   return (
     <BrowserRouter>
@@ -15,9 +21,9 @@ function App() {
         <Route path="/" element={<Login />} />
         <Route path="/login" element={<Login />} />
         <Route path="/registration" element={<Registration />} />
-        <Route path="/home" element={<Home />} />
-        <Route path="/quiz" element={<Quiz />} />
-        <Route path="/friends" element={<Friends />} />
+        <Route path="/home" element={<ProtectedRoute><Home /></ProtectedRoute>} />
+        <Route path="/quiz" element={<ProtectedRoute><Quiz /></ProtectedRoute>} />
+        <Route path="/friends" element={<ProtectedRoute><Friends /></ProtectedRoute>} />
         <Route path="/password/reset/email" element={<ResetPasswordEmail />} />
         <Route path="/password/reset/:token" element={<ResetPassword />} />
 
