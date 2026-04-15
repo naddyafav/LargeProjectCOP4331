@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Clouds from "../components/Clouds";
+import { getProfileByName, CloudProfile } from "../data/cloudProfiles";
 
 export default function Home() {
 
@@ -12,16 +13,8 @@ export default function Home() {
     friends: any[];
   };
 
-  type CloudResult = {
-    name: string;
-    emoji: string;
-    altitude: string;
-    description: string;
-    traits: string[];
-  };
-
   const [userData, setUserData] = useState<User | null>(null);
-  const [result, setResult]   = useState<CloudResult | null>(null);
+  const [result, setResult] = useState<CloudProfile | null>(null);
   const [error, setError] = useState("");
   const navigate = useNavigate();
   const goToQuiz = () => { navigate("/quiz"); };
@@ -53,6 +46,10 @@ export default function Home() {
 
         if (response.ok) {
           setUserData(data);
+          if (data.personalityType) {
+            const profile = getProfileByName(data.personalityType);
+            setResult(profile);
+          }
         } else {
           setError(data.error || "Failed to fetch user");
         }
