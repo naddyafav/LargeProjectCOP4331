@@ -85,6 +85,7 @@ router.post("/add", verifyToken, async (req, res) => {
         username: friendUser.username,
         firstName: friendUser.firstName,
         lastName: friendUser.lastName,
+        personalityType: friendUser.personalityType,
         email: friendUser.email
       }
     });
@@ -103,7 +104,7 @@ router.get("/list", verifyToken, async (req, res) => {
     const limit = Math.max(1, parseInt(req.query.limit) || 5);
     const skip  = (page - 1) * limit;
     const currentUserId = req.user.userId;
-    const currentUser = await User.findById(currentUserId).populate("friends", "username firstName lastName");
+    const currentUser = await User.findById(currentUserId).populate("friends", "username firstName lastName personalityType");
 
     if(!currentUser) {
       return res.status(404).json({ 
@@ -158,7 +159,7 @@ router.get("/search", verifyToken, async(req, res) => {
         { lastName: { $regex: safeQuery, $options: "i" } }
       ]
     })
-      .select("username firstName lastName")
+      .select("username firstName lastName personalityType")
       .skip(skip)
       .limit(limit);
 
