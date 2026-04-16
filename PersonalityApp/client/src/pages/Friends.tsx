@@ -39,11 +39,10 @@ interface Friend {
   username: string;
   firstName: string;
   lastName: string;
-}
-
-interface RecommendedUser extends Friend {
   personalityType?: string;
 }
+
+interface RecommendedUser extends Friend {}
 
 // ── Current Friends Card ─────────────────────────────────────────────────────
 
@@ -97,6 +96,9 @@ function CurrentFriendsCard({ friends, total, loading, error, page, onPageChange
                 <span className="user-name">
                   {f.firstName} {f.lastName}{" "}
                   <span className="user-handle">@{f.username}</span>
+                  {f.personalityType && (
+                    <span className="user-personality"> · {f.personalityType}</span>
+                  )}
                 </span>
                 <button
                   className="button button-danger button-action"
@@ -188,6 +190,9 @@ function RecommendedFriendsCard({ onAdd }: RecommendedFriendsCardProps) {
                 <span className="user-name">
                   {u.firstName} {u.lastName}{" "}
                   <span className="user-handle">@{u.username}</span>
+                  {u.personalityType && (
+                    <span className="user-personality"> · {u.personalityType}</span>
+                  )}
                 </span>
                 <button
                   className="button button-action"
@@ -306,6 +311,9 @@ function SearchFriendsCard({ onAdd }: SearchFriendsCardProps) {
                 <span className="user-name">
                   {u.firstName} {u.lastName}{" "}
                   <span className="user-handle">@{u.username}</span>
+                  {u.personalityType && (
+                    <span className="user-personality"> · {u.personalityType}</span>
+                  )}
                 </span>
                 <button
                   className="button button-action"
