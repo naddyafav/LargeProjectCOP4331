@@ -22,3 +22,9 @@ Scope: Full-Stack Web & Mobile Development\
 Usage: Assisted with backend API route development (friends, authentication, password reset, email verification),
        React/TypeScript frontend components (friends page, home page, protected routes, UI bug fixes), 
        debugging login and pagination issues, adding cloud personality types to user profiles, and mobile development integration.
+
+Team Member: Naddya Favela\
+Tool: Claude Code (claude-sonnet-4-6), Anthropic\
+Date: March 2026 – Apr. 2026\
+Scope: Backend API Development\
+Usage: Assisted with backend API route development including friends, login, and password reset endpoints, database management, and debugging endpoints during testing.
